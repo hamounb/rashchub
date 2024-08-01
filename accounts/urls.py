@@ -4,7 +4,7 @@ from .views import *
 app_name = 'accounts'
 
 urlpatterns = [
-    path("sign-up/", SignupView.as_view(), name="sign-up"),
-    path("sign-in/", SigninView.as_view(), name="sign-in"),
-    path("mobile-verify/", MobileVerifyView.as_view(), name="mobile-verify"),
+    path("sign-up/", SignUpView.as_view(), name="sign-up"),
+    path("sign-in/", SignInView.as_view(), name="sign-in"),
+    path("mobile-verify/<str:mobile>/", MobileVerifyView.as_view(), name="mobile-verify"),
     ]

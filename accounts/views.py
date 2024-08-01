@@ -9,14 +9,14 @@ from .melipayamak import send_token
 
 # Create your views here.
 
-class SignupView(views.View):
+class SignUpView(views.View):
 
     def get(self, request):
-        form = SignupForm()
-        return render(request, "account/sign-up.html", {"form":form})
+        form = SignUpForm()
+        return render(request, "accounts/sign-up.html", {"form":form})
     
     def post(self, request):
-        form = SignupForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
@@ -42,11 +42,11 @@ class SignupView(views.View):
                     messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
                     return redirect("accounts:mobile-verify", mobile=new_user.username)
                 messages.error(request, "رمز عبور و تکرار رمز عبور باید مشابه باشد!")
-                return render(request, "account/sign-up.html", {"form":form})
+                return render(request, "accounts/sign-up.html", {"form":form})
             else:
                 if user.is_active:
                     messages.error(request, "با این شماره همراه حساب کاربری ایجاد کرده‌اید، لظفا وارد حساب کاربری شوید.")
-                    return render(request, "account/sign-up.html", {"form":form})
+                    return render(request, "accounts/sign-up.html", {"form":form})
                 if password and password1 and password == password1:
                     user.set_password(password)
                     user.save()
@@ -72,8 +72,8 @@ class SignupView(views.View):
                         messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
                         return redirect("accounts:mobile-verify", mobile=user.username)
                 messages.error(request, "رمز عبور و تکرار رمز عبور باید مشابه باشد!")
-                return render(request, "account/sign-up.html", {"form":form})
-        return render(request, "account/sign-up.html", {"form":form})
+                return render(request, "accounts/sign-up.html", {"form":form})
+        return render(request, "accounts/sign-up.html", {"form":form})
     
 
 class MobileVerifyView(views.View):
@@ -98,6 +98,10 @@ class MobileVerifyView(views.View):
         except TokenModel.DoesNotExist:
             return redirect("accounts:sign-up")
         form = TokenForm(request.POST)
+        context = {
+            "form":form,
+            "mobile":mobile,
+        }
         if form.is_valid():
             first = form.cleaned_data.get("first")
             second = form.cleaned_data.get("second")
@@ -111,18 +115,18 @@ class MobileVerifyView(views.View):
                 user.save()
                 return redirect("accounts:profile")
             messages.error(request, "رمز یکبارمصرف اشتباه است!")
-            return render(request, "accounts/mobile-verify.html", {"form":form})
-        return render(request, "accounts/mobile-verify.html", {"form":form})
+            return render(request, "accounts/mobile-verify.html", context)
+        return render(request, "accounts/mobile-verify.html", context)
     
 
-class SigninView(views.View):
+class SignInView(views.View):
 
     def get(self, request):
-        form = SigninForm()
+        form = SignInForm()
         return render(request, "accounts/sign-in.html", {"form":form})
     
     def post(self, request):
-        form = SigninForm(request.POST)
+        form = SignInForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
@@ -139,5 +143,6 @@ class SigninView(views.View):
                         return redirect("accounts:profile")
                     messages.error(request, "رمز عبور اشتباه است!")
                     return render(request, "accounts/signin.html", {"form":form})
+                messages.error(request, "شماره همراه شما در لسیت کاربران وجود ندارد، لطفا ابتدا ثبت نام کنید و بعد وارد شوید")
                 return redirect("accounts:sign-up")
-        return render(request, "accounts/signin.html", {"form":form})
+        return render(request, "accounts/sign-in.html", {"form":form})

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+تایید شماره همراه
+{% endblock title %}
+
+{% block content %}
+<!-- Breadcrumb Section Start -->
+<section class="breadcrumb-section pt-0">
+    <div class="container-fluid-lg">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-contain">
+                    <h2 class="mb-2">تایید شماره همراه...</h2>
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="index.html">
+                                    <i class="fa-solid fa-house"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">تایید شماره همراه...</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- log in section start -->
+<section class="log-in-section otp-section section-b-space">
+    <div class="container-fluid-lg">
+        <div class="row">
+            <div class="col-xxl-6 col-xl-5 col-lg-6 d-lg-block d-none ms-auto">
+                <div class="image-contain">
+                    <img src="{% static 'assets/images/inner-page/otp.png' %}" class="img-fluid" alt="تایید شماره همراه در راش چوب">
+                </div>
+            </div>
+
+            <div class="col-xxl-4 col-xl-5 col-lg-6 me-auto">
+                <div class="d-flex align-items-center justify-content-center h-100">
+                    <div class="log-in-box">
+                        <div class="log-in-title">
+                            <h3 class="text-title">تایید حساب کاربری</h3>
+                            <h5 class="text-content">رمزیکبار مصرف جهت فعال سازی به شماره زیر ارسال شد : <br><span style="margin-top: 15px;">{{ mobile }}</span></h5>
+                        </div>
+                        <div>
+                            {% for message in messages %}
+                                {% if message.tags == 'error' %}
+                                    <div class="alert alert-danger mb-4" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-{{ message.tags }} mb-4" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                                
+                            {% endfor %}
+                         </div>
+                         {% if form.non_field_errors %}
+                            <div>
+                                {% for error in form.non_field_errors %}
+                                <div role="alert" class="alert alert-danger mb-4">
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <form method="post">
+                            <div id="otp" class="inputs d-flex flex-row justify-content-center">
+                                {{ form.sixth }}
+                                {% if form.sixth.errors %}
+                                    {% for error in form.sixth.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                {{ form.fifth }}
+                                {% if form.fifth.errors %}
+                                    {% for error in form.fifth.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                {{ form.fourth }}
+                                {% if form.fourth.errors %}
+                                    {% for error in form.fourth.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                {{ form.third }}
+                                {% if form.third.errors %}
+                                    {% for error in form.third.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                {{ form.second }}
+                                {% if form.second.errors %}
+                                    {% for error in form.second.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                {{ form.first }}
+                                {% if form.first.errors %}
+                                    {% for error in form.first.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="send-box pt-4">
+                                <h5>کد فعال سازی را دریافت نکردید ؟ <a href="javascript:void(0)" class="theme-color fw-bold">ارسال مجدد</a></h5>
+                            </div>
+
+                            <input class="btn btn-animation w-100 mt-3" type="submit" value="فعال سازی">
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- log in section end -->
+ {% block script %}
+
+ <script>
+    document.getElementById("id_first").addEventListener("input", function () {
+        document.getElementById("id_second").focus();
+    });
+    document.getElementById("id_second").addEventListener("input", function () {
+        document.getElementById("id_third").focus();
+    });
+    document.getElementById("id_third").addEventListener("input", function () {
+        document.getElementById("id_fourth").focus();
+    });
+    document.getElementById("id_fourth").addEventListener("input", function () {
+        document.getElementById("id_fifth").focus();
+    });
+    document.getElementById("id_fifth").addEventListener("input", function () {
+        document.getElementById("input3").focus();
+    });
+    document.getElementById("id_fifth").addEventListener("input", function () {
+        document.getElementById("id_sixth").focus();
+    });
+</script>
+ {% endblock script %}
+
+{% endblock content %}
