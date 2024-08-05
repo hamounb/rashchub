@@ -71,6 +71,7 @@
                             </div>
                         {% endif %}
                         <form method="post">
+                            {% csrf_token %}
                             <div id="otp" class="inputs d-flex flex-row justify-content-center">
                                 {{ form.sixth }}
                                 {% if form.sixth.errors %}
