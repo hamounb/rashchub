@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+تماس با ما | فروشگاه اینترنتی راش‌چوب
+{% endblock title %}
+
+{% block content %}
+<!-- Breadcrumb Section Start -->
+<section class="breadcrumb-section pt-0">
+    <div class="container-fluid-lg">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-contain">
+                    <h2>تماس با ما</h2>
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="index.html">
+                                    <i class="fa-solid fa-house"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">تماس با ما</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Contact Box Section Start -->
+<section class="contact-box-section">
+    <div class="container-fluid-lg">
+        <div class="row g-lg-5 g-3">
+            <div class="col-lg-6">
+                <div class="left-sidebar-box">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="contact-image">
+                                <img src="{% static 'assets/images/inner-page/contact-us1.png' %}"
+                                    class="img-fluid blur-up lazyloaded" alt="">
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="contact-title">
+                                <h3>با ما در تماس باشید</h3>
+                            </div>
+
+                            <div class="contact-detail">
+                                <div class="row g-4">
+                                    <div class="col-xxl-6 col-lg-12 col-sm-6">
+                                        <div class="contact-detail-box">
+                                            <div class="contact-icon">
+                                                <i class="fa-solid fa-phone"></i>
+                                            </div>
+                                            <div class="contact-detail-title">
+                                                <h4>تلفن تماس</h4>
+                                            </div>
+    
+                                            <div class="contact-detail-contain">
+                                                <p>09144397800</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xxl-6 col-lg-12 col-sm-6">
+                                        <div class="contact-detail-box">
+                                            <div class="contact-icon">
+                                                <i class="fa-solid fa-envelope"></i>
+                                            </div>
+                                            <div class="contact-detail-title">
+                                                <h4>ایمیل</h4>
+                                            </div>
+
+                                            <div class="contact-detail-contain">
+                                                <p>info@rashchub.com</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="title d-xxl-none d-block">
+                    <h2>تماس با ما</h2>
+                </div>
+                <div class="right-sidebar-box">
+                    {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger mb-4" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-{{ message.tags }} mb-4" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                            
+                        {% endfor %}
+                     </div>
+                    {% endif %}
+                     {% if form.non_field_errors %}
+                        <div>
+                            {% for error in form.non_field_errors %}
+                            <div role="alert" class="alert alert-danger mb-4">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xxl-6 col-lg-12 col-sm-6">
+                            <div class="mb-md-4 mb-3 custom-form">
+                                {{ form.first_name.label_tag }}
+                                <div class="custom-input">
+                                    {{ form.first_name }}
+                                    <i class="fa-solid fa-user"></i>
+                                    {% if form.first_name.errors %}
+                                        {% for error in form.first_name.errors %}
+                                            <p class="text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-6 col-lg-12 col-sm-6">
+                            <div class="mb-md-4 mb-3 custom-form">
+                                {{ form.last_name.label_tag }}
+                                <div class="custom-input">
+                                    {{ form.last_name }}
+                                    <i class="fa-solid fa-user"></i>
+                                    {% if form.last_name.errors %}
+                                        {% for error in form.last_name.errors %}
+                                            <p class="text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-6 col-lg-12 col-sm-6">
+                            <div class="mb-md-4 mb-3 custom-form">
+                                {{ form.email.label_tag }}
+                                <div class="custom-input">
+                                    {{ form.email }}
+                                    <i class="fa-solid fa-user"></i>
+                                    {% if form.email.errors %}
+                                        {% for error in form.email.errors %}
+                                            <p class="text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-6 col-lg-12 col-sm-6">
+                            <div class="mb-md-4 mb-3 custom-form">
+                                {{ form.mobile.label_tag }}
+                                <div class="custom-input">
+                                    {{ form.mobile }}
+                                    <i class="fa-solid fa-user"></i>
+                                    {% if form.mobile.errors %}
+                                        {% for error in form.mobile.errors %}
+                                            <p class="text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-6 col-lg-12 col-sm-6">
+                            <div class="mb-md-4 mb-3 custom-form">
+                                {{ form.message.label_tag }}
+                                <div class="custom-input">
+                                    {{ form.message }}
+                                    <i class="fa-solid fa-user"></i>
+                                    {% if form.fmessageerrors %}
+                                        {% for error in form.message.errors %}
+                                            <p class="text-danger">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="submit" value="ارسال پیام" class="btn btn-animation btn-md fw-bold ms-auto">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact Box Section End -->
+
+<!-- Map Section Start -->
+<section class="map-section">
+    <div class="container-fluid p-0">
+        <div class="map-box">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.954898403028!2d45.11412219234505!3d37.55612637570959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x401aadd70d06608b%3A0x8e7c5ee24f80f933!2z2LXZhtiv2YTbjCDahtmI2KjbjCDYsdin2LQg2obZiNio!5e0!3m2!1sen!2s!4v1723189437276!5m2!1sen!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>
+<!-- Map Section End -->
+
+{% endblock content %}

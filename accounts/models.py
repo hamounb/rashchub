@@ -31,6 +31,7 @@ class TokenModel(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="کاربر")
     token = models.CharField(verbose_name="رمزیکبارمصرف", max_length=6)
     status = models.CharField(verbose_name="وضعیت", max_length=100)
+    recid = models.CharField(verbose_name="شماره پیگیری", max_length=50, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username}"

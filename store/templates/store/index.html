@@ -1,0 +1,659 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+
+{% endblock title %}
+
+{% block content %}
+<!-- Home Section Start -->
+<section class="home-section pt-2 ratio_50">
+    <div class="container-fluid-lg">
+        <div class="row g-4">
+            <div class="col-xl-9 col-lg-8 ratio_50_1">
+                <div class="home-contain furniture-contain-2">
+                    <img src="{% static 'assets/images/furniture/banner/1.jpg' %}" class="bg-img blur-up lazyload" alt="">
+                    <div class="home-detail p-top-left mend-auto w-100">
+                        <div>
+                            <h6>فروش ویژه <span>30% تخفیف</span></h6>
+                            <h1 class="text-uppercase poster-1 text-content furniture-heading">خانه بمان ، راحت خرید کن<span class="daily">نیازمندی روزانه</span></h1>
+                            <button onclick="location.href = 'shop-left-sidebar.html';"
+                                class="btn btn-furniture mt-xxl-4 mt-3 home-button mend-auto">خرید آنلاین <i
+                                    class="fa-solid fa-left-long ms-2 icon"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 d-lg-inline-block d-none">
+                <div class="home-contain h-100 home-furniture">
+                    <img src="{% static 'assets/images/furniture/banner/2.png' %}" class="bg-img blur-up lazyload" alt="">
+                    <div class="home-detail p-top-left home-p-sm feature-detail mend-auto">
+                        <div>
+                            <h2 class="mt-0 theme-color text-kaushan fw-normal">فروش انحصاری</h2>
+                            <h3 class="furniture-content">میز و صندلی</h3>
+                            <a href="shop-left-sidebar.html"
+                                class="shop-button btn btn-furniture mt-0 d-inline-block btn-md text-content">خرید آنلاین <i class="fa-solid fa-left-long ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Home Section End -->
+
+<!-- Service Section Start -->
+<section class="service-section">
+    <div class="container-fluid-lg">
+        <div class="row g-3 row-cols-xxl-5 row-cols-lg-3 row-cols-md-2">
+            <div>
+                <div class="service-contain-2">
+                    <svg class="icon-width">
+                        <use xlink:href="../assets/svg/svg/service-icon-4.svg#shipping"></use>
+                    </svg>
+                    <div class="service-detail">
+                        <h3>ارسال رایگان</h3>
+                        <h6 class="text-content">برای خرید بالای 50 میلیون تومان</h6>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="service-contain-2">
+                    <svg class="icon-width">
+                        <use xlink:href="../assets/svg/svg/service-icon-4.svg#service"></use>
+                    </svg>
+                    <div class="service-detail">
+                        <h3>پشتیبانی کامل</h3>
+                        <h6 class="text-content">تمام وقت پاسخگوی شما هستیم</h6>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="service-contain-2">
+                    <svg class="icon-width">
+                        <use xlink:href="../assets/svg/svg/service-icon-4.svg#pay"></use>
+                    </svg>
+                    <div class="service-detail">
+                        <h3>پرداخت آنلاین</h3>
+                        <h6 class="text-content">ایمن خرید کنید</h6>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="service-contain-2">
+                    <svg class="icon-width">
+                        <use xlink:href="../assets/svg/svg/service-icon-4.svg#offer"></use>
+                    </svg>
+                    <div class="service-detail">
+                        <h3>جشنواره فروش</h3>
+                        <h6 class="text-content">تا 50% تخفیف ویژه</h6>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="service-contain-2">
+                    <svg class="icon-width">
+                        <use xlink:href="../assets/svg/svg/service-icon-4.svg#return"></use>
+                    </svg>
+                    <div class="service-detail">
+                        <h3>ضمانت اصالت</h3>
+                        <h6 class="text-content">بازگشت وجه در صورت عدم تایید</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Service Section End -->
+
+<!-- Product Section Start -->
+<section class="product-section">
+    <div class="container-fluid-lg">
+        <div class="row g-sm-4 g-3">
+            <div class="col-xxl-9 col-xl-8">
+                <div class="title title-flex">
+                    <div>
+                        <h2>بیشترین تخفیف امروز</h2>
+                        <span class="title-leaf">
+                            <svg class="icon-width">
+                                <use xlink:href="{% static 'assets/svg/leaf.svg#leaf' %}"></use>
+                            </svg>
+                        </span>
+                        <p>این فرصت را با تخفیف ویژه فقط برای این هفته از دست ندهید.</p>
+                    </div>
+                </div>
+
+                <div class="section-b-space">
+                    <div class="row row-cols-xxl-5 row-cols-md-4 row-cols-sm-3 row-cols-2 g-sm-4 g-3 no-arrow">
+                        <div>
+                            <div class="product-box product-white-bg wow fadeIn">
+                                <div class="product-image">
+                                    <a href="product-left-thumbnail.html">
+                                        <img src="{% static 'assets/images/furniture/1.png' %}"
+                                            class="img-fluid blur-up lazyload" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-detail position-relative">
+                                    <a href="product-left-thumbnail.html">
+                                        <h6 class="name">دکور خانه فیگورهای سرامیکی فینیش مات خانواده گوزن خوش شانس
+                                        </h6>
+                                    </a>
+
+                                    <h6 class="sold weight text-content fw-normal">1 KG</h6>
+
+                                    <h6 class="price theme-color">80.000 تومان</h6>
+
+                                    <div class="add-to-cart-btn-2 add-to-cart-box addtocart_btn">
+                                        <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
+                                                class="fa-solid fa-plus"></i></a></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="product-box product-white-bg wow fadeIn" data-wow-delay="0.1s">
+                                <div class="product-image">
+                                    <a href="product-left-thumbnail.html">
+                                        <img src="../assets/images/furniture/2.png"
+                                            class="img-fluid blur-up lazyload" alt="">
+                                    </a>
+                                    <ul class="product-option">
+                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="نمایش">
+                                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                data-bs-target="#view">
+                                                <i data-feather="eye"></i>
+                                            </a>
+                                        </li>
+
+                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="مقایسه">
+                                            <a href="compare.html">
+                                                <i data-feather="refresh-cw"></i>
+                                            </a>
+                                        </li>
+
+                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="علاقه‌مندی">
+                                            <a href="wishlist.html" class="notifi-wishlist">
+                                                <i data-feather="heart"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="product-detail position-relative">
+                                    <a href="product-left-thumbnail.html">
+                                        <h6 class="name">بالش حاشیه جمبو سایز کامل 17*27 راحتی لوکس</h6>
+                                    </a>
+
+                                    <h6 class="sold weight text-content fw-normal">1 KG</h6>
+
+                                    <h6 class="price theme-color">80.000 تومان</h6>
+
+                                    <div class="add-to-cart-btn-2 addtocart_btn">
+                                        <button class="btn addcart-button btn buy-button"><i
+                                                class="fa-solid fa-plus"></i></button>
+                                        <div class="cart_qty qty-box-2">
+                                            <div class="input-group">
+                                                <button type="button" class="qty-left-minus" data-type="minus"
+                                                    data-field="">
+                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                                </button>
+                                                <input class="form-control input-number qty-input" type="text"
+                                                    name="quantity" value="1">
+                                                <button type="button" class="qty-right-plus" data-type="plus"
+                                                    data-field="">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="title">
+                    <h2>برترین دسته های ما</h2>
+                    <span class="title-leaf">
+                        <svg class="icon-width">
+                            <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                        </svg>
+                    </span>
+                    <p>پربازدید ترین دسته ها از نگاه مشتریان</p>
+                </div>
+
+                <div class="category-slider-2 product-wrapper no-arrow">
+                    <div>
+                        <a href="{% url 'store:category' slug='مبل-اداری-و-خانگی' %}" class="category-box category-dark">
+                            <div>
+                                <img src="{% static 'assets/images/furniture/icon/stool-icon.svg' %}" class="blur-up lazyload" alt="">
+                                <h5>مبل اداری و خانگی</h5>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="{% url 'store:category' slug='صندلی-اپن-و-بار' %}" class="category-box category-dark">
+                            <div>
+                                <img src="{% static 'assets/images/furniture/icon/stool-icon.svg' %}" class="blur-up lazyload" alt="">
+                                <h5>صندلی اپن و بار</h5>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="{% url 'store:category' slug='جلومبلی-و-عسلی' %}" class="category-box category-dark">
+                            <div>
+                                <img src="{% static 'assets/images/furniture/icon/night-light.svg' %}" class="blur-up lazyload"
+                                    alt="">
+                                    <h5>جلو مبلی و عسلی</h5>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="{% url 'store:category' slug='میز-غذاخوری-چوبی' %}" class="category-box category-dark">
+                            <div>
+                                <img src="{% static 'assets/images/furniture/icon/wooden-stool.svg' %}" class="blur-up lazyload"
+                                    alt="">
+                                    <h5>میز غذاخوری چوبی</h5>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="{% url 'store:category' slug='صندلی-غذاخوری-چوبی' %}" class="category-box category-dark">
+                            <div>
+                                <img src="{% static 'assets/images/furniture/icon/wooden-chair.svg' %}" class="blur-up lazyload"
+                                    alt="">
+                                <h5>صندلی غذاخوری چوبی</h5>
+                            </div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{% url 'store:category' slug='میز-و-صندلی-چوبی' %}" class="category-box category-dark">
+                            <div>
+                                <img src="{% static 'assets/images/furniture/icon/dining.svg' %}" class="blur-up lazyload"
+                                    alt="">
+                                <h5>میز و صندلی چوبی</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="section-t-space section-b-space">
+                    <div class="row g-md-4 g-3">
+                        <div class="col-md-6">
+                            <div class="banner-contain hover-effect">
+                                <img src="{% static 'assets/images/furniture/banner/4.jpg' %}" class="bg-img blur-up lazyload"
+                                    alt="">
+                                <div class="banner-details p-center-left p-4">
+                                    <div>
+                                        <h3 class="text-kaushan text-yellow">50% تخفیف</h3>
+                                        <h4 class="theme-color mb-2 fw-normal"><span class="theme-color fw-bold">فصل تازه</span> در راه است</h4>
+                                        <button onclick="location.href = 'shop-left-sidebar.html';"
+                                            class="btn btn-furniture btn-sm mend-auto">خرید آنلاین <i
+                                                class="fa-solid fa-arrow-left icon"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="banner-contain hover-effect">
+                                <img src="{% static 'assets/images/furniture/banner/5.jpg' %}" class="bg-img blur-up lazyload"
+                                    alt="">
+                                <div class="banner-details p-center-left p-4">
+                                    <div>
+                                        <h3 class="text-kaushan text-yellow">50% تخفیف</h3>
+                                        <h4 class="theme-color mb-2 fw-normal"><span
+                                                class="theme-color fw-bold">تعویض</span> لوازم خانه</h4>
+                                        <button onclick="location.href = 'shop-left-sidebar.html';"
+                                            class="btn btn-furniture btn-sm mend-auto">خرید آنلاین <i
+                                                class="fa-solid fa-arrow-left icon"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="title d-block">
+                    <h2>پرفروش‌ترین‌ها</h2>
+                    <span class="title-leaf">
+                        <svg class="icon-width">
+                            <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                        </svg>
+                    </span>
+                    <p>لوازم خانه خود را مطابق با استاندارد جهانی خرید ست کنید</p>
+                </div>
+
+                <div class="row row-cols-xxl-5 row-cols-md-4 row-cols-sm-3 row-cols-2 g-sm-4 g-3 no-arrow">
+                <div>
+                    <div class="product-box product-white-bg wow fadeIn">
+                        <div class="product-image">
+                            <a href="product-left-thumbnail.html">
+                                <img src="../assets/images/furniture/13.png" class="img-fluid blur-up lazyload"
+                                    alt="">
+                            </a>
+                        </div>
+                        <div class="product-detail position-relative">
+                            <a href="product-left-thumbnail.html">
+                                <h6 class="name">ست ظروف غذاخوری براق گرد الاما</h6>
+                            </a>
+
+                            <h6 class="sold weight text-content fw-normal">1 KG</h6>
+
+                            <h6 class="price theme-color">80.000 تومان</h6>
+
+                            <div class="add-to-cart-btn-2 addtocart_btn">
+                                <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
+                                        class="fa-solid fa-plus"></i></a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="product-box product-white-bg wow fadeIn" data-wow-delay="0.1s">
+                        <div class="product-image">
+                            <a href="product-left-thumbnail.html">
+                                <img src="../assets/images/furniture/8.png" class="img-fluid blur-up lazyload"
+                                    alt="">
+                            </a>
+                        </div>
+                        <div class="product-detail position-relative">
+                            <a href="product-left-thumbnail.html">
+                                <h6 class="name">بشقاب مهمانی شش گوش الهه مرمر</h6>
+                            </a>
+
+                            <h6 class="sold weight text-content fw-normal">1 KG</h6>
+
+                            <h6 class="price theme-color">80.000 تومان</h6>
+
+                            <div class="add-to-cart-btn-2 addtocart_btn">
+                                <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
+                                        class="fa-solid fa-plus"></i></a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-xxl-3 col-xl-4 d-none d-xl-block">
+                <div class="p-sticky">
+                    <div class="category-menu">
+                        <h3>خرید بصرفه و اقتصادی</h3>
+                        <ul class="border-bottom-0">
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/decorations.svg"
+                                        class="blur-up lazyload" alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">دکوراسیون</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/pillows.svg" class="blur-up lazyload"
+                                        alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">ملحفه</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/cushions.svg" class="blur-up lazyload"
+                                        alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">کوسن ها</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/blankets.svg" class="blur-up lazyload"
+                                        alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">پتو</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/gift.svg" class="blur-up lazyload"
+                                        alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">بسته بندی های هدیه</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/sleepware.svg"
+                                        class="blur-up lazyload" alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">لباس خواب</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/bakeware.svg" class="blur-up lazyload"
+                                        alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">ظروف آشپزی و نان</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/room-fragrance.svg"
+                                        class="blur-up lazyload" alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">عطر اتاق</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/tableware.svg"
+                                        class="blur-up lazyload" alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">ظروف سرو و سفره</a>
+                                    </h5>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="category-list">
+                                    <img src="../assets/images/furniture/icon/shower.svg" class="blur-up lazyload"
+                                        alt="">
+                                    <h5>
+                                        <a href="shop-left-sidebar.html">حمام و دوش</a>
+                                    </h5>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="ratio_156 section-t-space">
+                        <div class="home-contain hover-effect">
+                            <img src="{% static 'assets/images/furniture/banner/3.jpg' %}" class="bg-img blur-up lazyload"
+                                alt="">
+                            <div class="home-detail p-top-left home-p-medium">
+                                <div>
+                                    <h4 class="text-yellow home-banner text-kaushan">محصول جدید</h4>
+                                    <h3 class="text-uppercase theme-color fw-bold mb-1">میز تحریر</h3>
+                                    <p class="text-content mb-3">پرفروش ترین هفته! پیشنهاد انحصاری</p>
+                                    <button onclick="location.href = 'shop-left-sidebar.html';"
+                                        class="btn btn-furniture btn-md mend-auto">خرید آنلاین <i
+                                            class="fa-solid fa-arrow-left icon"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-t-space">
+                        <div class="category-menu">
+                            <h3>محصولات روز</h3>
+
+                            <ul class="product-list border-0 p-0 d-block">
+                                <li>
+                                    <div class="offer-product">
+                                        <a href="product-left-thumbnail.html" class="offer-image">
+                                            <img src="../assets/images/furniture/2.png" class="blur-up lazyload"
+                                                alt="">
+                                        </a>
+
+                                        <div class="offer-detail">
+                                            <div>
+                                                <a href="product-left-thumbnail.html" class="text-title">
+                                                    <h6 class="name">شیر خشک ایتالیایی قهوه ای رنگ</h6>
+                                                </a>
+                                                <span>450 گرم</span>
+                                                <h6 class="price theme-color">70.000 تومان</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+
+<!-- Banner Section Start -->
+<section class="banner-section">
+    <div class="container-fluid-lg">
+        <div class="row">
+            <div class="col-12">
+                <div class="banner-contain-3 section-b-space section-t-space hover-effect overflow-visible">
+                    <img src="{% static 'assets/images/furniture/banner/6.jpg' %}" class="bg-img" alt="">
+                    <img src="{% static 'assets/images/furniture/banner/1-1.png' %}" class="flower-pot img-fluid" alt="">
+                    <div
+                        class="banner-detail p-center-left position-relative d-block py-0 banner-furniture mend-auto">
+                        <div class="row">
+                            <div class="col-xl-6 offset-xxl-2 offset-xl-1 col-md-8 col-sm-9">
+                                <h4 class="text-uppercase text-yellow text-kaushan furniture-title">بهترین تخفیف را دریافت کنید<img src="{% static 'assets/images/furniture/arrow.svg' %}" alt=""></h4>
+                                <h2 class="mt-sm-3 mt-1 mb-2 text-content">طراحی داخلی <span
+                                        class="theme-color fw-bold">فارس کد</span></h2>
+                                <p class="text-content">طراحی داخلی منزل خود را به ما بسپارید تا با کمترین هزینه زیباترین دیزاین را به شما تحویل دهیم.</p>
+                                <button class="btn theme-bg-color mt-sm-4 mt-2 btn-md text-white fw-bold"
+                                    onclick="location.href = '#';">سفارش طراحی</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner Section End -->
+
+<!-- Best Seller Section Start -->
+<section class="blog-section section-b-space">
+    <div class="container-fluid-lg">
+        <div class="title d-block">
+            <div>
+                <h2>جدیدترین بلاگ‌های ما</h2>
+                <span class="title-leaf">
+                    <svg class="icon-width">
+                        <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                    </svg>
+                </span>
+                <p>یک بلاگ خوب میتونه کمک کنه برای انتخابتون</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-xxl-9 col-xl-8 col-lg-7 order-lg-2">
+                <div class="row g-4 ratio_65">
+                    <div class="col-xxl-4 col-sm-6">
+                        <div class="blog-box wow fadeInUp">
+                            <div class="blog-image">
+                                <a href="blog-detail.html">
+                                    <img src="{% static 'assets/images/inner-page/blog/1.jpg' %}"
+                                        class="bg-img blur-up lazyload" alt="">
+                                </a>
+                            </div>
+
+                            <div class="blog-contain">
+                                <div class="blog-label">
+                                    <span class="time"><i data-feather="clock"></i> <span>10 اردیبهشت 1400</span></span>
+                                    <span class="super"><i data-feather="user"></i> <span>مارک جی اسپایت</span></span>
+                                </div>
+                                <a href="blog-detail.html">
+                                    <h3>یک قابلمه کرم پاستا مرغ مدیترانه ای خامه ای.</h3>
+                                </a>
+                                <button onclick="location.href = 'blog-detail.html';" class="blog-button">مطالعه بیشتر
+                                    <i class="fa-solid fa-right-long"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-4 col-sm-6">
+                        <div class="blog-box wow fadeInUp" data-wow-delay="0.05s">
+                            <div class="blog-image">
+                                <a href="blog-detail.html">
+                                    <img src="{% static 'assets/images/inner-page/blog/2.jpg' %}" class="bg-img" alt="">
+                                </a>
+                            </div>
+
+                            <div class="blog-contain">
+                                <div class="blog-label">
+                                    <span class="time"><i data-feather="clock"></i> <span>10 اردیبهشت 1400</span></span>
+                                    <span class="super"><i data-feather="user"></i> <span>مارک جی اسپایت</span></span>
+                                </div>
+                                <a href="blog-detail.html">
+                                    <h3>چگونه قالب وردپرس را نصب کنیم؟</h3>
+                                </a>
+                                <button onclick="location.href = 'blog-detail.html';" class="blog-button">مطالعه بیشتر
+                                    <i class="fa-solid fa-right-long"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- Best Seller Section End -->
+
+<!-- Newsletter Section Start -->
+<section class="newsletter-section section-b-space">
+    <div class="container-fluid-lg">
+        <div class="newsletter-box newsletter-box-2">
+            <div class="newsletter-contain py-5">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xxl-4 col-lg-5 col-md-7 col-sm-9 offset-xxl-2 offset-md-1">
+                            <div class="newsletter-detail">
+                                <h2>عضویت در خبرنامه ...</h2>
+                                <h5>20 دلار تخفیف برای اولین سفارش شما</h5>
+                                <div class="input-box">
+                                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                                         placeholder="ایمیل خود را وارد کنید">
+                                    <i class="fa-solid fa-envelope arrow"></i>
+                                    <button class="sub-btn  btn-animation">
+                                        <span class="d-sm-block d-none">عضویت</span>
+                                        <i class="fa-solid fa-arrow-left icon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Newsletter Section End -->
+
+{% endblock content %}

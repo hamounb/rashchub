@@ -2,8 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
-from ckeditor_uploader.fields import RichTextUploadingField
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 from datetime import datetime
 import os
 
@@ -13,10 +12,14 @@ def is_number(value):
     if not str(value).isnumeric():
         raise ValidationError('لطفا فقط عدد وارد نمایید!')
     
-
 def get_image_path(obj, fn):
     ex = os.path.splitext(fn)[1]
     path = datetime.now().strftime(f"images/%Y-%m/%d/{obj.pk}-{ex}")
+    return path
+
+def get_cover_path(obj, fn):
+    ex = os.path.splitext(fn)[1]
+    path = datetime.now().strftime(f"cover/%Y-%m/%d/{obj.pk}-{ex}")
     return path
     
 
@@ -42,6 +45,25 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class ContactUsModel(models.Model):
+    first_name = models.CharField(verbose_name="نام", max_length=50)
+    last_name = models.CharField(verbose_name="نام خانوادگی", max_length=50)
+    email = models.EmailField(verbose_name="ایمیل", null=True, blank=True)
+    mobile = models.CharField(verbose_name="شماره موبایل", max_length=11)
+    message = models.TextField(verbose_name="پیام")
+    code = models.CharField(verbose_name="کد پیگیری", max_length=9)
+    created_date = models.DateTimeField(verbose_name='تاریخ ایجاد', auto_now_add=True)
+    modified_date = models.DateTimeField(verbose_name='تاریخ تغییرات', auto_now=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.mobile}"
+    
+    class Meta:
+        ordering = ["-created_date"]
+        verbose_name = "پیام"
+        verbose_name_plural = "پیام‌ها"
 
 
 class CategoryModel(BaseModel):
@@ -121,12 +143,12 @@ class ProductModel(BaseModel):
     height = models.CharField(verbose_name="ارتفاع", max_length=100, null=True, blank=True)
     color = models.ManyToManyField(ColorModel, verbose_name="رنگ")
     material = models.ForeignKey(MaterialModel, verbose_name="جنس", on_delete=models.SET_NULL, null=True, blank=True)
-    shape = models.ForeignKey(ShapeModel, verbose_name="شکل", on_delete=models.SET_NULL, null=True, blank=True)
-    feature = RichTextField(verbose_name="ویژگی", null=True, blank=True)
+    feature = CKEditor5Field("ویژگی", null=True, blank=True, config_name='extends')
     view = models.IntegerField(verbose_name="تعداد بازدید", default=0)
     sale = models.IntegerField(verbose_name="تعداد فروش", default=0)
-    description = RichTextUploadingField(verbose_name="توضیحات", null=True, blank=True)
+    description = CKEditor5Field("توضیحات", null=True, blank=True, config_name='extends')
     hashtag = models.ManyToManyField(HashtagModel, verbose_name="هشتگ")
+    cover = models.ImageField(verbose_name="عکس کاور", upload_to=get_cover_path, null=True, blank=True)
     slug = models.SlugField(verbose_name="آدرس", allow_unicode=True, unique=True)
 
     def __str__(self):
@@ -142,7 +164,7 @@ class ProductModel(BaseModel):
 
 class ProductImageModel(BaseModel):
     product = models.ForeignKey(ProductModel, verbose_name="محصول", on_delete=models.CASCADE)
-    image = models.ImageField(verbose_name="عکس محصول", upload_to=get_image_path)
+    image = models.FileField(verbose_name="عکس محصول", upload_to=get_image_path)
 
     def __str__(self):
         return f"{self.pk}-{self.product.name}-{self.image.name}"
@@ -169,19 +191,6 @@ class ProductPriceModel(BaseModel):
         ]
         verbose_name = "قیمت"
         verbose_name_plural = "قیمت‌ها"
-
-
-class ProductRateModel(BaseModel):
-    product = models.ForeignKey(ProductModel, verbose_name="محصول", on_delete=models.CASCADE)
-    rate = models.IntegerField(verbose_name="امتیاز", default=0, validators=[MinValueValidator(0),MaxValueValidator(5)])
-
-    def __str__(self):
-        return f"{self.product.name} - {self.rate}"
-    
-    class Meta:
-        ordering = ["-rate", "product"]
-        verbose_name = "امتیاز"
-        verbose_name_plural = "امتیازها"
 
 
 class ProductCommentModel(BaseModel):

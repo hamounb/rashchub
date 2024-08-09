@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django import views
 from .forms import *
 from .models import TokenModel
@@ -31,16 +31,19 @@ class SignUpView(views.View):
                     new_user.is_active = False
                     new_user.save()
                     send = send_token(number=username)
-                    token = TokenModel(
-                        user = new_user,
-                        user_created = new_user,
-                        user_modified = new_user,
-                        token = send['code'],
-                        status = send['status']
-                    )
-                    token.save()
-                    messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
-                    return redirect("accounts:mobile-verify", mobile=new_user.username)
+                    if send is not None:
+                        token = TokenModel(
+                            user = new_user,
+                            user_created = new_user,
+                            user_modified = new_user,
+                            token = send["code"],
+                            status = send["status"],
+                            recid = send["recid"]
+                        )
+                        token.save()
+                        messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
+                        return redirect("accounts:mobile-verify", mobile=new_user.username)
+                    return
                 messages.error(request, "رمز عبور و تکرار رمز عبور باید مشابه باشد!")
                 return render(request, "accounts/sign-up.html", {"form":form})
             else:
@@ -54,23 +57,29 @@ class SignUpView(views.View):
                         token = TokenModel.objects.get(user=user)
                     except TokenModel.DoesNotExist:
                         send = send_token(number=user.username)
-                        token = TokenModel(
-                            user = user,
-                            user_created = user,
-                            user_modified = user,
-                            token = send["code"],
-                            status = send["status"]
-                        )
-                        token.save()
-                        messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
-                        return redirect("accounts:mobile-verify", mobile=user.username)
+                        if send is not None:
+                            token = TokenModel(
+                                user = user,
+                                user_created = user,
+                                user_modified = user,
+                                token = send["code"],
+                                status = send["status"],
+                                recid = send["recid"]
+                            )
+                            token.save()
+                            messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
+                            return redirect("accounts:mobile-verify", mobile=user.username)
+                        return
                     else:
                         send = send_token(number=user.username)
-                        token.token = send["code"]
-                        token.status = send["status"]
-                        token.save()
-                        messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
-                        return redirect("accounts:mobile-verify", mobile=user.username)
+                        if send is not None:
+                            token.token = send["code"]
+                            token.status = send["status"]
+                            token.recid = send["recid"]
+                            token.save()
+                            messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
+                            return redirect("accounts:mobile-verify", mobile=user.username)
+                        return
                 messages.error(request, "رمز عبور و تکرار رمز عبور باید مشابه باشد!")
                 return render(request, "accounts/sign-up.html", {"form":form})
         return render(request, "accounts/sign-up.html", {"form":form})
@@ -113,15 +122,53 @@ class MobileVerifyView(views.View):
             if token.token == code:
                 user.is_active = True
                 user.save()
+                login(request, user)
                 return redirect("accounts:profile")
             messages.error(request, "رمز یکبارمصرف اشتباه است!")
             return render(request, "accounts/mobile-verify.html", context)
         return render(request, "accounts/mobile-verify.html", context)
     
 
+class TokenSendView(views.View):
+
+    def get(self, request, mobile):
+        user = get_object_or_404(User, username=mobile)
+        if user.is_active:
+            return redirect("")
+        try:
+            token = TokenModel.objects.get(user__username=mobile)
+        except TokenModel.DoesNotExist:
+            send = send_token(number=user.username)
+            if send is not None:
+                token = TokenModel(
+                    user = user,
+                    user_created = user,
+                    user_modified = user,
+                    token = send["code"],
+                    status = send["status"],
+                    recid = send["recid"]
+                )
+                token.save()
+                messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
+                return redirect("accounts:mobile-verify", mobile=user.username)
+            return
+        else:
+            send = send_token(number=user.username)
+            if send is not None:
+                token.token = send["code"]
+                token.status = send["status"]
+                token.recid = send["recid"]
+                token.save()
+                messages.success(request, "یک پیامک حاوی رمزیکبارمصرف برای شما ارسال شد.")
+                return redirect("accounts:mobile-verify", mobile=user.username)
+            return
+    
+
 class SignInView(views.View):
 
     def get(self, request):
+        if self.request.user.is_authenticated:
+            print("yes")
         form = SignInForm()
         return render(request, "accounts/sign-in.html", {"form":form})
     
@@ -137,12 +184,13 @@ class SignInView(views.View):
                 return render(request, "accounts/sign-in.html", {"form":form})
             else:
                 if user.is_active:
-                    user = authenticate(username=username, password=password)
-                    if user is not None:
-                        login(user)
-                        return redirect("accounts:profile")
+                    auth_user = authenticate(username=username, password=password)
+                    print(user)
+                    if auth_user is not None:
+                        login(request, user)
+                        return render(request, "accounts/sign-in.html", {"form":form})
                     messages.error(request, "رمز عبور اشتباه است!")
                     return render(request, "accounts/signin.html", {"form":form})
                 messages.error(request, "شماره همراه شما در لسیت کاربران وجود ندارد، لطفا ابتدا ثبت نام کنید و بعد وارد شوید")
-                return redirect("accounts:sign-up")
+                return render(request, "accounts/sign-in.html", {"form":form})
         return render(request, "accounts/sign-in.html", {"form":form})

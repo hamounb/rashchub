@@ -3,6 +3,12 @@ from .models import *
 
 # Register your models here.
 
+@admin.register(ContactUsModel)
+class ContactUsAdmin(admin.ModelAdmin):
+    readonly_fields = ("created_date", "modified_date", "code")
+    search_fields = ("first_name", "last_name", "mobile", "email", "message", "code")
+    
+
 @admin.register(CategoryModel)
 class CategoryAdmin(admin.ModelAdmin):
     readonly_fields = ("user_created", "user_modified", "created_date", "modified_date")
@@ -88,11 +94,26 @@ class HashtagAdmin(admin.ModelAdmin):
         return super().save_model(request, obj, form, change)
     
 
+class ProductPriceInlineAdmin(admin.StackedInline):
+    model = ProductPriceModel
+    fields = ("capacity", "price", "on_sale")
+    readonly_fields = ("user_created", "user_modified", "created_date", "modified_date")
+    
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.user_modified = request.user
+        else:
+            obj.user_created = request.user
+            obj.user_modified = request.user
+        return super().save_model(request, obj, form, change)
+    
+
 @admin.register(ProductModel)
 class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ("user_created", "user_modified", "created_date", "modified_date")
     search_fields = ("name", "code")
     prepopulated_fields = {"slug": ("name",)}
+    inlines = [ProductPriceInlineAdmin,]
     
     def save_model(self, request, obj, form, change):
         if change:
@@ -127,20 +148,6 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 @admin.register(ProductPriceModel)
 class ProductPriceAdmin(admin.ModelAdmin):
-    readonly_fields = ("user_created", "user_modified", "created_date", "modified_date")
-    search_fields = ("product",)
-    
-    def save_model(self, request, obj, form, change):
-        if change:
-            obj.user_modified = request.user
-        else:
-            obj.user_created = request.user
-            obj.user_modified = request.user
-        return super().save_model(request, obj, form, change)
-    
-
-@admin.register(ProductRateModel)
-class ProductRateAdmin(admin.ModelAdmin):
     readonly_fields = ("user_created", "user_modified", "created_date", "modified_date")
     search_fields = ("product",)
     

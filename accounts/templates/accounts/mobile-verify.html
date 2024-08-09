@@ -112,7 +112,7 @@
                             </div>
 
                             <div class="send-box pt-4">
-                                <h5>کد فعال سازی را دریافت نکردید ؟ <a href="javascript:void(0)" class="theme-color fw-bold">ارسال مجدد</a></h5>
+                                <h5>کد فعال سازی را دریافت نکردید ؟ <a href="{% url 'accounts:token-send' mobile=mobile %}" class="theme-color fw-bold">ارسال مجدد</a></h5>
                             </div>
 
                             <input class="btn btn-animation w-100 mt-3" type="submit" value="فعال سازی">
