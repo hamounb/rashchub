@@ -13,13 +13,11 @@ def is_number(value):
         raise ValidationError('لطفا فقط عدد وارد نمایید!')
     
 def get_image_path(obj, fn):
-    ex = os.path.splitext(fn)[1]
-    path = datetime.now().strftime(f"images/%Y-%m/%d/{obj.pk}-{ex}")
+    path = datetime.now().strftime(f"images/%Y-%m/%d/{fn}")
     return path
 
 def get_cover_path(obj, fn):
-    ex = os.path.splitext(fn)[1]
-    path = datetime.now().strftime(f"cover/%Y-%m/%d/{obj.pk}-{ex}")
+    path = datetime.now().strftime(f"cover/%Y-%m/%d/{fn}")
     return path
     
 
@@ -111,17 +109,6 @@ class MaterialModel(BaseModel):
         verbose_name_plural = "جنس‌ها"
 
 
-class ShapeModel(BaseModel):
-    title = models.CharField(verbose_name="شکل میز", max_length=100, unique=True)
-
-    def __str__(self):
-        return self.title
-    
-    class Meta:
-        verbose_name = "شکل"
-        verbose_name_plural = "اشکال"
-
-
 class HashtagModel(BaseModel):
     title = models.CharField(verbose_name="هشتگ", max_length=100, unique=True)
 
@@ -143,6 +130,7 @@ class ProductModel(BaseModel):
     height = models.CharField(verbose_name="ارتفاع", max_length=100, null=True, blank=True)
     color = models.ManyToManyField(ColorModel, verbose_name="رنگ")
     material = models.ForeignKey(MaterialModel, verbose_name="جنس", on_delete=models.SET_NULL, null=True, blank=True)
+    price = models.CharField(verbose_name="قیمت پایه", max_length=12, validators=[is_number], null=True, blank=True)
     feature = CKEditor5Field("ویژگی", null=True, blank=True, config_name='extends')
     view = models.IntegerField(verbose_name="تعداد بازدید", default=0)
     sale = models.IntegerField(verbose_name="تعداد فروش", default=0)
@@ -153,9 +141,15 @@ class ProductModel(BaseModel):
 
     def __str__(self):
         if self.is_active:
-            return f"{self.pk},{self.code}-{self.name}"
+            if self.code:
+                return f"{self.pk},{self.code}-{self.name}"
+            else:
+                return f"{self.pk}, {self.name}"
         else:
-            return f"{self.pk},{self.code}-{self.name}--غیرفعال"
+            if self.code:
+                return f"{self.pk},{self.code}-{self.name}--غیرفعال"
+            else:
+                return f"{self.pk}, {self.name}--غیرفعال"
     
     class Meta:
         verbose_name = "محصول"

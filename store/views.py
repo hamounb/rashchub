@@ -57,13 +57,20 @@ class CartRemoveView(views.View):
         cart.remove_product(id=product.pk)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
+from django.db.models import Max
 
 class IndexView(views.View):
 
     def get(self, request):
         categories = CategoryModel.objects.all()
+        products_on_sale = ProductPriceModel.objects.exclude(on_sale__iexact="0")
+        products_new = ProductModel.objects.all().order_by("-created_date")[:2]
+        products_sale = ProductModel.objects.all().order_by("-sale")[:5]
         context = {
             "categories":categories,
+            "products_on_sale":products_on_sale,
+            "products_new":products_new,
+            "products_sale":products_sale,
         }
         return render(request, "store/index.html", context)
     
@@ -91,12 +98,16 @@ class ProductDetailsView(views.View):
 
     def get(self, request, slug):
         product = get_object_or_404(ProductModel, slug=uri_to_iri(slug))
+        products = ProductModel.objects.filter(category__slug=product.category.slug)[:6]
+        products_new = ProductModel.objects.all().order_by("-created_date")[:2]
         images = ProductImageModel.objects.filter(product=product)
         prices = ProductPriceModel.objects.filter(product=product)
         context = {
             "product":product,
             "images":images,
             "prices":prices,
+            "products":products,
+            "products_new":products_new,
         }
         return render(request, "store/product-details.html", context)
     
@@ -134,3 +145,9 @@ class ContactUsView(views.View):
             messages.success(request, "پیام شما با موفقیت ارسال شد، لطفا منتظر باشید تا همکاران ما با شما تماس بگیرند.")
             return render(request, "store/messages.html")
         return render(request, "store/contact-us.html", {"form":form})
+    
+
+class HelpView(views.View):
+
+    def get(self, request, key):
+        return render(request, "store/help.html", {"help":key})

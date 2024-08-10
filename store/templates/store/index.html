@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-
+به راش چوب خوش آمدید | برترین فروشگاه اینترنتی لوازم خانه
 {% endblock title %}
 
 {% block content %}
@@ -11,7 +11,7 @@
         <div class="row g-4">
             <div class="col-xl-9 col-lg-8 ratio_50_1">
                 <div class="home-contain furniture-contain-2">
-                    <img src="{% static 'assets/images/furniture/banner/1.jpg' %}" class="bg-img blur-up lazyload" alt="">
+                    <img src="{% static 'assets/images/furniture/banner/p1.png' %}" class="bg-img blur-up lazyload" alt="">
                     <div class="home-detail p-top-left mend-auto w-100">
                         <div>
                             <h6>فروش ویژه <span>30% تخفیف</span></h6>
@@ -26,7 +26,7 @@
 
             <div class="col-xl-3 col-lg-4 d-lg-inline-block d-none">
                 <div class="home-contain h-100 home-furniture">
-                    <img src="{% static 'assets/images/furniture/banner/2.png' %}" class="bg-img blur-up lazyload" alt="">
+                    <img src="{% static 'assets/images/furniture/banner/p2.png' %}" class="bg-img blur-up lazyload" alt="">
                     <div class="home-detail p-top-left home-p-sm feature-detail mend-auto">
                         <div>
                             <h2 class="mt-0 theme-color text-kaushan fw-normal">فروش انحصاری</h2>
@@ -125,90 +125,34 @@
 
                 <div class="section-b-space">
                     <div class="row row-cols-xxl-5 row-cols-md-4 row-cols-sm-3 row-cols-2 g-sm-4 g-3 no-arrow">
+                        {% for p in products_on_sale %}
                         <div>
                             <div class="product-box product-white-bg wow fadeIn">
                                 <div class="product-image">
-                                    <a href="product-left-thumbnail.html">
-                                        <img src="{% static 'assets/images/furniture/1.png' %}"
+                                    <a href="{% url 'store:product-details' slug=p.product.slug %}">
+                                        <img src="{{ p.product.cover.url }}"
                                             class="img-fluid blur-up lazyload" alt="">
                                     </a>
                                 </div>
                                 <div class="product-detail position-relative">
-                                    <a href="product-left-thumbnail.html">
-                                        <h6 class="name">دکور خانه فیگورهای سرامیکی فینیش مات خانواده گوزن خوش شانس
+                                    <a href="{% url 'store:product-details' slug=p.product.slug %}">
+                                        <h6 class="name">{{ p.product.name }}
                                         </h6>
                                     </a>
 
-                                    <h6 class="sold weight text-content fw-normal">1 KG</h6>
-
-                                    <h6 class="price theme-color">80.000 تومان</h6>
-
+                                    <h6 class="sold weight text-content fw-normal">{{ p.capacity.title }}</h6>
+                                    
+                                    <h6 class="price theme-color"><del>{% if p.price %}{{ p.price }}{% else %}0 {% endif %} تومان</del></h6>
+                                    <h6 class="price theme-color">{% if p.on_sale %}{{ p.on_sale }}{% else %}0 {% endif %} تومان</h6>
                                     <div class="add-to-cart-btn-2 add-to-cart-box addtocart_btn">
                                         <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
                                                 class="fa-solid fa-plus"></i></a></button>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-
-                        <div>
-                            <div class="product-box product-white-bg wow fadeIn" data-wow-delay="0.1s">
-                                <div class="product-image">
-                                    <a href="product-left-thumbnail.html">
-                                        <img src="../assets/images/furniture/2.png"
-                                            class="img-fluid blur-up lazyload" alt="">
-                                    </a>
-                                    <ul class="product-option">
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="نمایش">
-                                            <a href="javascript:void(0)" data-bs-toggle="modal"
-                                                data-bs-target="#view">
-                                                <i data-feather="eye"></i>
-                                            </a>
-                                        </li>
-
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="مقایسه">
-                                            <a href="compare.html">
-                                                <i data-feather="refresh-cw"></i>
-                                            </a>
-                                        </li>
-
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="علاقه‌مندی">
-                                            <a href="wishlist.html" class="notifi-wishlist">
-                                                <i data-feather="heart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product-detail position-relative">
-                                    <a href="product-left-thumbnail.html">
-                                        <h6 class="name">بالش حاشیه جمبو سایز کامل 17*27 راحتی لوکس</h6>
-                                    </a>
-
-                                    <h6 class="sold weight text-content fw-normal">1 KG</h6>
-
-                                    <h6 class="price theme-color">80.000 تومان</h6>
-
-                                    <div class="add-to-cart-btn-2 addtocart_btn">
-                                        <button class="btn addcart-button btn buy-button"><i
-                                                class="fa-solid fa-plus"></i></button>
-                                        <div class="cart_qty qty-box-2">
-                                            <div class="input-group">
-                                                <button type="button" class="qty-left-minus" data-type="minus"
-                                                    data-field="">
-                                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                                </button>
-                                                <input class="form-control input-number qty-input" type="text"
-                                                    name="quantity" value="1">
-                                                <button type="button" class="qty-right-plus" data-type="plus"
-                                                    data-field="">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -226,7 +170,7 @@
                     <div>
                         <a href="{% url 'store:category' slug='مبل-اداری-و-خانگی' %}" class="category-box category-dark">
                             <div>
-                                <img src="{% static 'assets/images/furniture/icon/stool-icon.svg' %}" class="blur-up lazyload" alt="">
+                                <img src="{% static 'assets/images/furniture/icon/desk.svg' %}" class="blur-up lazyload" alt="">
                                 <h5>مبل اداری و خانگی</h5>
                             </div>
                         </a>
@@ -329,61 +273,38 @@
                 </div>
 
                 <div class="row row-cols-xxl-5 row-cols-md-4 row-cols-sm-3 row-cols-2 g-sm-4 g-3 no-arrow">
-                <div>
-                    <div class="product-box product-white-bg wow fadeIn">
-                        <div class="product-image">
-                            <a href="product-left-thumbnail.html">
-                                <img src="../assets/images/furniture/13.png" class="img-fluid blur-up lazyload"
-                                    alt="">
-                            </a>
-                        </div>
-                        <div class="product-detail position-relative">
-                            <a href="product-left-thumbnail.html">
-                                <h6 class="name">ست ظروف غذاخوری براق گرد الاما</h6>
-                            </a>
+                    {% for sale in products_sale %}
+                    <div>
+                        <div class="product-box product-white-bg wow fadeIn">
+                            <div class="product-image">
+                                <a href="{% url 'store:product-details' slug=sale.slug %}">
+                                    <img src="{{ sale.cover.url }}" class="img-fluid blur-up lazyload"
+                                        alt="{{ sale.name }}">
+                                </a>
+                            </div>
+                            <div class="product-detail position-relative">
+                                <a href="{% url 'store:product-details' slug=sale.slug %}">
+                                    <h6 class="name">{{ sale.name }}</h6>
+                                </a>
 
-                            <h6 class="sold weight text-content fw-normal">1 KG</h6>
+                                <h6 class="sold weight text-content fw-normal">{{ sale.category.title }}</h6>
+                                
+                                <h6 class="price theme-color">{% if sale.price %}{{ sale.price }}{% else %}0{% endif %} تومان</h6>
 
-                            <h6 class="price theme-color">80.000 تومان</h6>
-
-                            <div class="add-to-cart-btn-2 addtocart_btn">
-                                <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
-                                        class="fa-solid fa-plus"></i></a></button>
+                                <div class="add-to-cart-btn-2 addtocart_btn">
+                                    <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
+                                            class="fa-solid fa-plus"></i></a></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div>
-                    <div class="product-box product-white-bg wow fadeIn" data-wow-delay="0.1s">
-                        <div class="product-image">
-                            <a href="product-left-thumbnail.html">
-                                <img src="../assets/images/furniture/8.png" class="img-fluid blur-up lazyload"
-                                    alt="">
-                            </a>
-                        </div>
-                        <div class="product-detail position-relative">
-                            <a href="product-left-thumbnail.html">
-                                <h6 class="name">بشقاب مهمانی شش گوش الهه مرمر</h6>
-                            </a>
-
-                            <h6 class="sold weight text-content fw-normal">1 KG</h6>
-
-                            <h6 class="price theme-color">80.000 تومان</h6>
-
-                            <div class="add-to-cart-btn-2 addtocart_btn">
-                                <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
-                                        class="fa-solid fa-plus"></i></a></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    {% endfor %}
                 </div>
             </div>
 
             <div class="col-xxl-3 col-xl-4 d-none d-xl-block">
                 <div class="p-sticky">
-                    <div class="category-menu">
+                    {% comment %} <div class="category-menu">
                         <h3>خرید بصرفه و اقتصادی</h3>
                         <ul class="border-bottom-0">
                             <li>
@@ -477,7 +398,7 @@
                                 </div>
                             </li>
                         </ul>
-                    </div>
+                    </div> {% endcomment %}
 
                     <div class="ratio_156 section-t-space">
                         <div class="home-contain hover-effect">
@@ -501,24 +422,26 @@
                             <h3>محصولات روز</h3>
 
                             <ul class="product-list border-0 p-0 d-block">
+                                {% for new in products_new %}
                                 <li>
                                     <div class="offer-product">
-                                        <a href="product-left-thumbnail.html" class="offer-image">
-                                            <img src="../assets/images/furniture/2.png" class="blur-up lazyload"
-                                                alt="">
+                                        <a href="{% url 'store:product-details' slug=new.slug %}" class="offer-image">
+                                            <img src="{{ new.cover.url }}" class="blur-up lazyload"
+                                                alt="{{ new.name }}">
                                         </a>
 
                                         <div class="offer-detail">
                                             <div>
-                                                <a href="product-left-thumbnail.html" class="text-title">
-                                                    <h6 class="name">شیر خشک ایتالیایی قهوه ای رنگ</h6>
+                                                <a href="{% url 'store:product-details' slug=new.slug %}" class="text-title">
+                                                    <h6 class="name">{{ new.name }}</h6>
                                                 </a>
-                                                <span>450 گرم</span>
-                                                <h6 class="price theme-color">70.000 تومان</h6>
+                                                <span>{{ new.category.title }}</span>
+                                                <h6 class="price theme-color">{% if new.price %}{{ new.price }}{% else %}0{% endif %} تومان</h6>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -541,9 +464,9 @@
                         class="banner-detail p-center-left position-relative d-block py-0 banner-furniture mend-auto">
                         <div class="row">
                             <div class="col-xl-6 offset-xxl-2 offset-xl-1 col-md-8 col-sm-9">
-                                <h4 class="text-uppercase text-yellow text-kaushan furniture-title">بهترین تخفیف را دریافت کنید<img src="{% static 'assets/images/furniture/arrow.svg' %}" alt=""></h4>
-                                <h2 class="mt-sm-3 mt-1 mb-2 text-content">طراحی داخلی <span
-                                        class="theme-color fw-bold">فارس کد</span></h2>
+                                <h4 class="text-uppercase text-yellow text-kaushan furniture-title">بهترین کیفیت را خریداری کنید<img src="{% static 'assets/images/furniture/arrow.svg' %}" alt=""></h4>
+                                <h2 class="mt-sm-3 mt-1 mb-2 text-content">طراحی اصیل <span
+                                        class="theme-color fw-bold">راش چوب</span></h2>
                                 <p class="text-content">طراحی داخلی منزل خود را به ما بسپارید تا با کمترین هزینه زیباترین دیزاین را به شما تحویل دهیم.</p>
                                 <button class="btn theme-bg-color mt-sm-4 mt-2 btn-md text-white fw-bold"
                                     onclick="location.href = '#';">سفارش طراحی</button>
@@ -558,6 +481,7 @@
 <!-- Banner Section End -->
 
 <!-- Best Seller Section Start -->
+{% if blogs %}
 <section class="blog-section section-b-space">
     <div class="container-fluid-lg">
         <div class="title d-block">
@@ -596,34 +520,13 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-xxl-4 col-sm-6">
-                        <div class="blog-box wow fadeInUp" data-wow-delay="0.05s">
-                            <div class="blog-image">
-                                <a href="blog-detail.html">
-                                    <img src="{% static 'assets/images/inner-page/blog/2.jpg' %}" class="bg-img" alt="">
-                                </a>
-                            </div>
-
-                            <div class="blog-contain">
-                                <div class="blog-label">
-                                    <span class="time"><i data-feather="clock"></i> <span>10 اردیبهشت 1400</span></span>
-                                    <span class="super"><i data-feather="user"></i> <span>مارک جی اسپایت</span></span>
-                                </div>
-                                <a href="blog-detail.html">
-                                    <h3>چگونه قالب وردپرس را نصب کنیم؟</h3>
-                                </a>
-                                <button onclick="location.href = 'blog-detail.html';" class="blog-button">مطالعه بیشتر
-                                    <i class="fa-solid fa-right-long"></i></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 </section>
+{% endif %}
 <!-- Best Seller Section End -->
 
 <!-- Newsletter Section Start -->

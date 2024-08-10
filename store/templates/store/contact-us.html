@@ -154,7 +154,7 @@
                                 {{ form.email.label_tag }}
                                 <div class="custom-input">
                                     {{ form.email }}
-                                    <i class="fa-solid fa-user"></i>
+                                    <i class="fa-solid fa-envelope"></i>
                                     {% if form.email.errors %}
                                         {% for error in form.email.errors %}
                                             <p class="text-danger">{{ error }}</p>
@@ -169,7 +169,7 @@
                                 {{ form.mobile.label_tag }}
                                 <div class="custom-input">
                                     {{ form.mobile }}
-                                    <i class="fa-solid fa-user"></i>
+                                    <i class="fa-solid fa-mobile-screen-button"></i>
                                     {% if form.mobile.errors %}
                                         {% for error in form.mobile.errors %}
                                             <p class="text-danger">{{ error }}</p>
@@ -179,12 +179,12 @@
                             </div>
                         </div>
 
-                        <div class="col-xxl-6 col-lg-12 col-sm-6">
+                        <div class="col-12">
                             <div class="mb-md-4 mb-3 custom-form">
                                 {{ form.message.label_tag }}
-                                <div class="custom-input">
+                                <div class="custom-textarea">
                                     {{ form.message }}
-                                    <i class="fa-solid fa-user"></i>
+                                    <i class="fa-solid fa-message"></i>
                                     {% if form.fmessageerrors %}
                                         {% for error in form.message.errors %}
                                             <p class="text-danger">{{ error }}</p>
