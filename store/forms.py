@@ -17,3 +17,7 @@ class ContactUsForm(forms.Form):
     email= forms.EmailField(label="ایمیل", required=False, widget=forms.EmailInput(attrs={"class":"form-control", "placeholder":"ایمیل خود را وارد کنید"}))
     mobile = forms.CharField(label="شماره موبایل", required=True, max_length=11, validators=[is_number, is_mobile], widget=forms.TextInput(attrs={"class":"form-control", "placeholder":"موبایل خود را وارد کنید"}))
     message = forms.CharField(label="پیام شما", widget=forms.Textarea(attrs={"class":"form-control", "placeholder":"پیام خود را تایپ کنید", "rows":6}))
+
+
+class CartSubmitForm(forms.Form):
+    price = forms.CharField()

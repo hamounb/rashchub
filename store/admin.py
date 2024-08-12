@@ -177,7 +177,7 @@ class ProductCommentAdmin(admin.ModelAdmin):
 @admin.register(InvoiceModel)
 class InvoiceAdmin(admin.ModelAdmin):
     readonly_fields = ("user_created", "user_modified", "created_date", "modified_date")
-    search_fields = ("pk", "user", "comment")
+    search_fields = ("pk", "user",)
     
     def save_model(self, request, obj, form, change):
         if change:

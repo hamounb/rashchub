@@ -145,7 +145,7 @@
                                     <h6 class="price theme-color"><del>{% if p.price %}{{ p.price }}{% else %}0 {% endif %} تومان</del></h6>
                                     <h6 class="price theme-color">{% if p.on_sale %}{{ p.on_sale }}{% else %}0 {% endif %} تومان</h6>
                                     <div class="add-to-cart-btn-2 add-to-cart-box addtocart_btn">
-                                        <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
+                                        <button class="btn addcart-button btn buy-button"><a href="{% url 'store:cart-add' id=p.pk %}" style="color:#417394"><i
                                                 class="fa-solid fa-plus"></i></a></button>
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@
                     <h2>برترین دسته های ما</h2>
                     <span class="title-leaf">
                         <svg class="icon-width">
-                            <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                            <use xlink:href="{% static 'assets/svg/leaf.svg' %}"></use>
                         </svg>
                     </span>
                     <p>پربازدید ترین دسته ها از نگاه مشتریان</p>
@@ -288,13 +288,19 @@
                                 </a>
 
                                 <h6 class="sold weight text-content fw-normal">{{ sale.category.title }}</h6>
-                                
-                                <h6 class="price theme-color">{% if sale.price %}{{ sale.price }}{% else %}0{% endif %} تومان</h6>
-
+                                {% for p in sale.productpricemodel_set.all %}
+                                {% if p.capacity.title == 'پایه' %}
+                                <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} تومان</h6>
+                                {% endif %}
+                                {% endfor %}
+                                {% for p in sale.productpricemodel_set.all %}
+                                {% if p.capacity.title == 'پایه' %}
                                 <div class="add-to-cart-btn-2 addtocart_btn">
-                                    <button class="btn addcart-button btn buy-button"><a href="#" style="color:#417394"><i
+                                    <button class="btn addcart-button btn buy-button"><a href="{% url 'store:cart-add' id=p.pk %}" style="color:#417394"><i
                                             class="fa-solid fa-plus"></i></a></button>
                                 </div>
+                                {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -436,7 +442,11 @@
                                                     <h6 class="name">{{ new.name }}</h6>
                                                 </a>
                                                 <span>{{ new.category.title }}</span>
-                                                <h6 class="price theme-color">{% if new.price %}{{ new.price }}{% else %}0{% endif %} تومان</h6>
+                                                {% for p in new.productpricemodel_set.all %}
+                                                {% if p.capacity.title == 'پایه' %}
+                                                <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} تومان</h6>
+                                                {% endif %}
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
@@ -539,7 +549,7 @@
                         <div class="col-xxl-4 col-lg-5 col-md-7 col-sm-9 offset-xxl-2 offset-md-1">
                             <div class="newsletter-detail">
                                 <h2>عضویت در خبرنامه ...</h2>
-                                <h5>20 دلار تخفیف برای اولین سفارش شما</h5>
+                                <h5>20 درصد تخفیف برای اولین سفارش شما</h5>
                                 <div class="input-box">
                                     <input type="email" class="form-control" id="exampleFormControlInput1"
                                          placeholder="ایمیل خود را وارد کنید">

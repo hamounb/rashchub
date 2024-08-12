@@ -13,4 +13,5 @@ urlpatterns = [
     path("about-us/", AboutUsView.as_view(), name="about-us"),
     path("contact-us/", ContactUsView.as_view(), name="contact-us"),
     path("help/<str:key>/", HelpView.as_view(), name="help"),
+    path("cart/submit/", CartSubmitView.as_view(), name="cart-submit"),
 ]

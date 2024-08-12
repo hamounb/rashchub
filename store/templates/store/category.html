@@ -40,9 +40,8 @@
                         <ul class="nav nav-pills mb-3 custom-nav-tab" id="pills-tab" role="tablist">
                             {% for category in categories %}
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link {% if category.slug == slug %}active{% endif %}" id="pills-vegetables" data-bs-toggle="pill"
-                                    data-bs-target="#pills-vegetable" type="button" role="tab"
-                                    aria-selected="true">{{ category.title }}</button>
+                                <input type="button" onclick="location.href='{% url 'store:category' slug=category.slug %}';" class="nav-link {% if category.slug == slug %}active{% endif %}"
+                                    aria-selected="true" value="{{ category.title }}">
                             </li>
                             {% endfor %}
                         </ul>
@@ -65,7 +64,7 @@
                                 <div class="product-image">
                                     <a href="{% url 'store:product-details' slug=product.slug %}">
                                         <img src="{{ product.cover.url }}"
-                                            class="img-fluid blur-up lazyload" alt="">
+                                            class="img-fluid blur-up lazyload" alt="{{ product.name }}">
                                     </a>
                                 </div>
                             </div>
@@ -79,16 +78,9 @@
                                         <span>تعداد فروش:</span>
                                         <span>{{ product.sale }}</span>
                                     </div>
-                                    <h6 class="unit">{% for i in product.color.all %}{{ i.title }} {% endfor %}</h6>
-                                    {% for price in prices %}
-                                    {% if price.on_sale != '0' %}
-                                    <h5 class="price">{{ price.capacity.title }} <span class="theme-color">{{ price.on_sale }} </span> <del> {{ price.price }}</del>
+                                    <h6 class="unit">{% for i in product.color.all %}{{ i.title }}، {% endfor %}</h6>
+                                    <h5 class="price"><span class="theme-color">{% if product.price %}{{ product.price }} تومان{% else %}0{% endif %} </span>
                                     </h5>
-                                    {% else %}
-                                    <h5 class="price">{{ price.capacity.title }} <span class="theme-color">{{ price.price }} </span>
-                                    </h5>
-                                    {% endif %}
-                                    {% endfor %}
                                    <div class="add-to-cart-box bg-white">
                                         <a href="{% url 'store:cart-add' id=product.pk %}" class="btn btn-block btn-add-cart">افزودن به سبد خرید</a>
                                     </div>

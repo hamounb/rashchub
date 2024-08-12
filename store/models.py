@@ -130,7 +130,6 @@ class ProductModel(BaseModel):
     height = models.CharField(verbose_name="ارتفاع", max_length=100, null=True, blank=True)
     color = models.ManyToManyField(ColorModel, verbose_name="رنگ")
     material = models.ForeignKey(MaterialModel, verbose_name="جنس", on_delete=models.SET_NULL, null=True, blank=True)
-    price = models.CharField(verbose_name="قیمت پایه", max_length=12, validators=[is_number], null=True, blank=True)
     feature = CKEditor5Field("ویژگی", null=True, blank=True, config_name='extends')
     view = models.IntegerField(verbose_name="تعداد بازدید", default=0)
     sale = models.IntegerField(verbose_name="تعداد فروش", default=0)
@@ -221,15 +220,14 @@ class InvoiceModel(BaseModel):
         (STATE_ACCEPT, 'پرداخت شده'),
         (STATE_DENY, 'پرداخت نشده')
     )
+    is_active = models.BooleanField(verbose_name="فعال", default=True)
     user = models.ForeignKey(User, verbose_name="کاربر", on_delete=models.PROTECT)
     state = models.CharField(verbose_name='وضعیت', max_length=50, choices=STATE_CHOICES, default=STATE_WAIT)
-    price = models.CharField(verbose_name="مبلغ", max_length=12, validators=[is_number])
-    value_added = models.IntegerField(verbose_name='ارزش افزوده', default=0, validators=[is_number,MinValueValidator(0)])
     total_price = models.CharField(verbose_name='مبلغ کل', max_length=12, validators=[is_number])
     description = models.TextField(verbose_name='توضیحات', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.pk}--{self.user.username}--{self.state}--{self.total_price}--{self.created_date}"
+        return f"{self.pk}--{self.state}--{self.total_price}--{self.created_date}"
     
     class Meta:
         ordering = ["-created_date"]
@@ -239,11 +237,12 @@ class InvoiceModel(BaseModel):
 
 class InvoiceItemModel(BaseModel):
     invoice = models.ForeignKey(InvoiceModel, verbose_name="فاکتور", on_delete=models.CASCADE)
-    product = models.ForeignKey(ProductModel, verbose_name="محصول", on_delete=models.PROTECT)
+    product = models.ForeignKey(ProductPriceModel, verbose_name="محصول", on_delete=models.PROTECT)
     price = models.CharField(verbose_name="قیمت", max_length=12, validators=[is_number])
+    on_sale = models.CharField(verbose_name="تخفیف", max_length=12, validators=[is_number])
 
     def __str__(self):
-        return f"{self.invoice.pk}--{self.invoice.state}--{self.invoice.user.username}"
+        return f"{self.invoice.pk}--{self.invoice.state}--{self.invoice.user.username} ({self.product.product.name}-{self.product.capacity.title})"
     
     class Meta:
         ordering = ["-created_date","invoice"]

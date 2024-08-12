@@ -36,7 +36,7 @@ class Cart:
 class CartAddView(views.View):
 
     def get(self, request, id):
-        product = get_object_or_404(ProductModel, pk=id)
+        product = get_object_or_404(ProductPriceModel, pk=id)
         cart = Cart(request)
         cart.add_product(id=product.pk)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -44,20 +44,36 @@ class CartAddView(views.View):
 
 class CartView(views.View):
 
-    def get(request):
+    def get(self, request):
         cart = Cart(request)
-        return render(request, 'store/cart.html', {'cart': cart})
+        products = ProductPriceModel.objects.filter(id__in=[int(id) for id in cart.cart.keys()])
+        total_price = 0
+        total_on_sale = 0
+        sale = 0
+        for i in products:
+            total_price += int(i.price)
+            if i.on_sale != "0":
+                total_on_sale += int(i.on_sale)
+            else:
+                total_on_sale += int(i.price)
+        sale = total_price - total_on_sale    
+        context = {
+            "products":products,
+            "total_price":total_price,
+            "total_on_sale":total_on_sale,
+            "sale":sale,
+        }
+        return render(request, 'store/cart.html', context)
     
 
 class CartRemoveView(views.View):
 
     def get(self, request, id):
-        product = get_object_or_404(ProductModel, pk=id)
+        product = get_object_or_404(ProductPriceModel, pk=id)
         cart = Cart(request)
         cart.remove_product(id=product.pk)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     
-from django.db.models import Max
 
 class IndexView(views.View):
 
@@ -98,14 +114,17 @@ class ProductDetailsView(views.View):
 
     def get(self, request, slug):
         product = get_object_or_404(ProductModel, slug=uri_to_iri(slug))
+        view = int(product.view)
+        view += 1
+        product.view = view
+        product.save()
         products = ProductModel.objects.filter(category__slug=product.category.slug)[:6]
         products_new = ProductModel.objects.all().order_by("-created_date")[:2]
         images = ProductImageModel.objects.filter(product=product)
-        prices = ProductPriceModel.objects.filter(product=product)
+        form = CartSubmitForm()
         context = {
             "product":product,
             "images":images,
-            "prices":prices,
             "products":products,
             "products_new":products_new,
         }
@@ -151,3 +170,15 @@ class HelpView(views.View):
 
     def get(self, request, key):
         return render(request, "store/help.html", {"help":key})
+    
+
+class CartSubmitView(views.View):
+
+    def post(self, request):
+        form = CartSubmitForm(request.POST)
+        if form.is_valid():
+            price = form.cleaned_data.get("price")
+            cart = Cart(request)
+            cart.add_product(price)
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        

@@ -75,7 +75,11 @@
                             <div class="right-box-contain">
                                 <h2 class="name">{{ product.name }}</h2>
                                 <div class="price-rating">
-                                    <h3 class="theme-color price">{% if product.price %}{{ product.price }}{% else %}0{% endif %} تومان</h3>
+                                    {% for p in product.productpricemodel_set.all %}
+                                    {% if p.capacity.title == 'پایه' %}
+                                    <h3 class="theme-color price">{% if p.price %}{{ p.price }}{% else %}0{% endif %} تومان</h3>
+                                    {% endif %}
+                                    {% endfor %}
                                     <div class="product-rating custom-rate">
                                         <ul class="rating">
                                             <li>
@@ -103,20 +107,21 @@
                                     <p>{{ product.feature|safe }}</p>
                                     {% endif %}
                                 </div>
-
+                                <form method="post" action="{% url 'store:cart-submit' %}">
+                                    {% csrf_token %}
                                 <div class="product-package">
                                     <div class="product-title">
-                                        <h4>ظرفیت </h4>
+                                        <h4>مدل </h4>
                                     </div>
 
                                     <div class="select-package">
-                                        <select class="form-control form-select">
-                                            <option selected>انتخاب ظرفیت</option>
-                                            {% for i in prices %}
+                                        <select class="form-control form-select" name="price" id="id_price" required>
+                                            <option value="" selected="selected" hidden="hidden">انتخاب مدل</option>
+                                            {% for i in product.productpricemodel_set.all %}
                                             {% if i.on_sale != "0" %}
-                                            <option value="{{ i.capacity.pk }}">{{ i.capacity.title }}: {{ i.price }} تومان با تخفیف</option>
+                                            <option value="{{ i.pk }}">{{ i.capacity.title }}: {{ i.price }} تومان با تخفیف</option>
                                             {% else %}
-                                            <option value="{{ i.capacity.pk }}">{{ i.capacity.title }}: {{ i.price }} تومان بدون تخفیف</option>
+                                            <option value="{{ i.pk }}">{{ i.capacity.title }}: {{ i.price }} تومان بدون تخفیف</option>
                                             {% endif %}
                                             {% endfor %}
                                         </select>
@@ -124,17 +129,11 @@
                                 </div>
 
                                 <div class="note-box product-package">
-                                    <div class="cart_qty qty-box product-qty">
-                                        <div class="input-group">
-                                            <input class="form-control input-number qty-input" type="text"
-                                                name="quantity" value="1">
-                                        </div>
-                                    </div>
 
-                                    <button onclick="location.href = 'cart.html';"
-                                        class="btn btn-md bg-dark cart-button text-white w-100">افزودن به سبد خرید</button>
+                                    <input type="submit" value="افزودن به سبد خرید"
+                                        class="btn btn-md bg-dark cart-button text-white w-100">
                                 </div>
-
+                                </form>
                                 <div class="progress-sec">
                                     <div class="left-progressbar">
                                         <h6> دارای برگ گارانتی راش چوب</h6>
@@ -623,7 +622,7 @@
 
                                 </div>
                             </div>
-                            <a href="{% static 'assets/images/guarantee.jpg' %}" target="_blank"><img src="{% static 'assets/images/guarantee.jpg' %}" class="blur-up lazyload" alt="گارانتی راش چوب" style="max-width:-webkit-fill-available"></a>
+                            <a href="{% static 'assets/images/guarantee.jpg' %}" target="_blank"><img src="{% static 'assets/images/guarantee.jpg' %}" class="blur-up lazyload" alt="گارانتی راش چوب" style="max-width:-webkit-fill-available;width:-moz-available"></a>
                             <div class="vendor-list">
                                 <ul>
                                     <li>
@@ -647,7 +646,7 @@
                                         <div class="offer-product">
                                             <a href="{% url 'store:product-details' slug=new.slug %}" class="offer-image">
                                                 <img src="{{ new.cover.url }}"
-                                                    class="img-fluid blur-up lazyload" alt="">
+                                                    class="img-fluid blur-up lazyload" alt="{{ new.name }}">
                                             </a>
 
                                             <div class="offer-detail">
@@ -656,7 +655,11 @@
                                                         <h6 class="name">{{ new.name }}</h6>
                                                     </a>
                                                     <span>{{ new.category.title }}</span>
-                                                    <h6 class="price theme-color">{% if new.price %}{{ new.price }}{% else%}0{% endif %} تومان</h6>
+                                                    {% for p in new.productpricemodel_set.all %}
+                                                    {% if p.capacity.title == 'پایه' %}
+                                                    <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else%}0{% endif %} تومان</h6>
+                                                    {% endif %}
+                                                    {% endfor %}
                                                 </div>
                                             </div>
                                         </div>
@@ -727,10 +730,14 @@
                                             {{ j.title }}،
                                             {% endfor %}
                                         </h6>
+                                        {% for p in i.productpricemodel_set.all %}
+                                        {% if p.capacity.title == 'پایه' %}
                                         <h5 class="price"><span class="theme-color">{% if i.price %}{{ i.price }}{% else %}0{% endif %} تومان</span> 
                                         </h5>
+                                        {% endif %}
+                                        {% endfor %}
                                         <div class="add-to-cart-box bg-white">
-                                            <a class="btn btn-add-cart addcart-button">افزودن
+                                            <a class="btn btn-add-cart addcart-button" href="{% url 'store:product-details' slug=i.slug %}">مشاهده
                                                 
                                             </a>
                                         </div>

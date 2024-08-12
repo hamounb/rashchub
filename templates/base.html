@@ -314,62 +314,57 @@
                                             <button type="button" class="btn p-0 position-relative header-wishlist">
                                                 <i data-feather="shopping-cart"></i>
                                                 <span class="position-absolute top-0 start-100 translate-middle badge">
+                                                    {% if cart_products %}
+                                                    {% for i in cart_products %}
+                                                    {% if forloop.last %}
+                                                    {{ forloop.counter }}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    {% else %}
+                                                    0
+                                                    {% endif %}
                                                     <span class="visually-hidden">پیام جدید</span>
                                                 </span>
                                             </button>
 
                                             <div class="onhover-div">
-                                                {% comment %} <ul class="cart-list">
+                                                <ul class="cart-list">
+                                                    {% for cart in cart_products %}
                                                     <li class="product-box-contain">
                                                         <div class="drop-cart">
                                                             <a href="product-left-thumbnail.html" class="drop-image">
-                                                                <img src="{% static 'assets/images/vegetable/product/1.png' %}"
-                                                                    class="blur-up lazyload" alt="">
+                                                                <img src="{{ cart.product.cover.url }}"
+                                                                    class="blur-up lazyload" alt="{{ cart.product.name }}">
                                                             </a>
 
                                                             <div class="drop-contain">
-                                                                <a href="product-left-thumbnail.html">
-                                                                    <h5>شکلات قهوه ای فرانسوی با ظرف شیشه ای</h5>
+                                                                <a href="{% url 'store:product-details' slug=cart.product.slug %}">
+                                                                    <h5>{{ cart.product.name }}</h5>
                                                                 </a>
-                                                                <h6><span>1 x</span> 80.000 تومان</h6>
-                                                                <button class="close-button close_button">
+                                                                {% if cart.on_sale != '0' %}
+                                                                <h6><span>1 x</span> {{ cart.on_sale }} تومان</h6>
+                                                                {% else %}
+                                                                <h6><span>1 x</span> {{ cart.price }} تومان</h6>
+                                                                {% endif %}
+                                                                <button class="close-button close_button" onclick="location.href='{% url 'store:cart-remove' id=cart.pk %}'">
                                                                     <i class="fa-solid fa-xmark"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
                                                     </li>
-
-                                                    <li class="product-box-contain">
-                                                        <div class="drop-cart">
-                                                            <a href="product-left-thumbnail.html" class="drop-image">
-                                                                <img src="{% static 'assets/images/vegetable/product/2.png' %}"
-                                                                    class="blur-up lazyload" alt="">
-                                                            </a>
-
-                                                            <div class="drop-contain">
-                                                                <a href="product-left-thumbnail.html">
-                                                                    <h5>بیسکویت کره بادام زمینی 600 گرمی
-                                                                    </h5>
-                                                                </a>
-                                                                <h6><span>1 x</span> 25.000 تومان</h6>
-                                                                <button class="close-button close_button">
-                                                                    <i class="fa-solid fa-xmark"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </li>
+                                                    {% endfor %}
                                                 </ul>
 
                                                 <div class="price-box">
                                                     <h5>جمع کل :</h5>
-                                                    <h4 class="theme-color fw-bold">103.000 تومان</h4>
+                                                    <h4 class="theme-color fw-bold">{{ total_price }} تومان</h4>
                                                 </div>
 
                                                 <div class="button-group">
-                                                    <a href="cart.html" class="btn btn-sm cart-button">سبد خرید</a>
-                                                    <a href="checkout.html" class="btn btn-sm cart-button theme-bg-color
+                                                    <a href="{% url 'store:cart' %}" class="btn btn-sm cart-button">سبد خرید</a>
+                                                    <a href="{% url 'store:cart' %}" class="btn btn-sm cart-button theme-bg-color
                                                     text-white">پرداخت نهایی</a>
-                                                </div> {% endcomment %}
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -662,9 +657,6 @@
     <!-- Zoom Js -->
     <script src="{% static 'assets/js/jquery.elevatezoom.js' %}"></script>
     <script src="{% static 'assets/js/zoom-filter.js' %}"></script>
-
-    <!-- Sticky-bar js -->
-    <script src="{% static 'assets/js/sticky-cart-bottom.js' %}"></script>
 
     <!-- Price Range Js -->
     <script src="{% static 'assets/js/ion.rangeSlider.min.js' %}"></script>
