@@ -6,6 +6,7 @@ from django.contrib import messages
 from random import randint
 from django.utils.encoding import uri_to_iri
 from django.core.paginator import Paginator
+from accounts.melipayamak import send_sms
 
 # Create your views here.
 
@@ -161,6 +162,8 @@ class ContactUsView(views.View):
                 code = str(code),
             )
             contact.save()
+            send_sms(str(mobile), 239745, [str(code)])
+            print(send_sms)
             messages.success(request, "پیام شما با موفقیت ارسال شد، لطفا منتظر باشید تا همکاران ما با شما تماس بگیرند.")
             return render(request, "store/messages.html")
         return render(request, "store/contact-us.html", {"form":form})

@@ -15,3 +15,17 @@ class TokenAdmin(admin.ModelAdmin):
             obj.user_created = request.user
             obj.user_modified = request.user
         return super().save_model(request, obj, form, change)
+    
+
+@admin.register(AddressModel)
+class AddressAdmin(admin.ModelAdmin):
+    readonly_fields = ("user_created", "user_modified", "created_date", "modified_date")
+    search_fields = ("user", "address")
+    
+    def save_model(self, request, obj, form, change):
+        if change:
+            obj.user_modified = request.user
+        else:
+            obj.user_created = request.user
+            obj.user_modified = request.user
+        return super().save_model(request, obj, form, change)

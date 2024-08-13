@@ -53,7 +53,7 @@
                     </svg>
                     <div class="service-detail">
                         <h3>ارسال رایگان</h3>
-                        <h6 class="text-content">برای خرید بالای 50 میلیون تومان</h6>
+                        <h6 class="text-content">برای خرید بالای 50 میلیون ریال</h6>
                     </div>
                 </div>
             </div>
@@ -142,8 +142,8 @@
 
                                     <h6 class="sold weight text-content fw-normal">{{ p.capacity.title }}</h6>
                                     
-                                    <h6 class="price theme-color"><del>{% if p.price %}{{ p.price }}{% else %}0 {% endif %} تومان</del></h6>
-                                    <h6 class="price theme-color">{% if p.on_sale %}{{ p.on_sale }}{% else %}0 {% endif %} تومان</h6>
+                                    <h6 class="price theme-color"><del>{% if p.price %}{{ p.price }}{% else %}0 {% endif %} ریال</del></h6>
+                                    <h6 class="price theme-color">{% if p.on_sale %}{{ p.on_sale }}{% else %}0 {% endif %} ریال</h6>
                                     <div class="add-to-cart-btn-2 add-to-cart-box addtocart_btn">
                                         <button class="btn addcart-button btn buy-button"><a href="{% url 'store:cart-add' id=p.pk %}" style="color:#417394"><i
                                                 class="fa-solid fa-plus"></i></a></button>
@@ -290,7 +290,7 @@
                                 <h6 class="sold weight text-content fw-normal">{{ sale.category.title }}</h6>
                                 {% for p in sale.productpricemodel_set.all %}
                                 {% if p.capacity.title == 'پایه' %}
-                                <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} تومان</h6>
+                                <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} ریال</h6>
                                 {% endif %}
                                 {% endfor %}
                                 {% for p in sale.productpricemodel_set.all %}
@@ -444,7 +444,7 @@
                                                 <span>{{ new.category.title }}</span>
                                                 {% for p in new.productpricemodel_set.all %}
                                                 {% if p.capacity.title == 'پایه' %}
-                                                <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} تومان</h6>
+                                                <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} ریال</h6>
                                                 {% endif %}
                                                 {% endfor %}
                                             </div>

@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django import views
 from .forms import *
-from .models import TokenModel
+from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .melipayamak import send_token
+from django.contrib.auth.mixins import LoginRequiredMixin
+from store.models import InvoiceModel, InvoiceItemModel, ProductPriceModel
 
 # Create your views here.
 
@@ -118,7 +120,7 @@ class MobileVerifyView(views.View):
             fourth = form.cleaned_data.get("fourth")
             fifth = form.cleaned_data.get("fifth")
             sixth = form.cleaned_data.get("sixth")
-            code = f"{first}{second}{third}{fourth}{fifth}{sixth}"
+            code = f"{first}{second}{third}{fourth}{fifth}TokenModel{sixth}"
             if token.token == code:
                 user.is_active = True
                 user.save()
@@ -194,3 +196,86 @@ class SignInView(views.View):
                 messages.error(request, "شماره همراه شما در لسیت کاربران وجود ندارد، لطفا ابتدا ثبت نام کنید و بعد وارد شوید")
                 return render(request, "accounts/sign-in.html", {"form":form})
         return render(request, "accounts/sign-in.html", {"form":form})
+    
+
+class ProfileView(LoginRequiredMixin, views.View):
+    login_url = "accounts:sign-in"
+
+    def get(self, request):
+        user = get_object_or_404(User, pk=request.user.id)
+        addresses = AddressModel.objects.filter(user=user)
+        invoices = InvoiceModel.objects.filter(user=user)
+        total_invoices = invoices.count()
+        total_payed = invoices.filter(state=InvoiceModel.STATE_ACCEPT).count()
+        total_waiting = invoices.filter(state=InvoiceModel.STATE_WAIT).count()
+        context = {
+            "user":user,
+            "addresses":addresses,
+            "invoices":invoices,
+            "total_invoices":total_invoices,
+            "total_payed":total_payed,
+            "total_waiting":total_waiting,
+        }
+        return render(request, "accounts/profile.html", context)
+    
+
+class ProfileEditView(LoginRequiredMixin, views.View):
+    login_url = "accounts:sign-in"
+
+    def get(self, request):
+        user = get_object_or_404(User, pk=request.user.id)
+        form = ProfileForm(instance=user)
+        return render(request, "accounts/profile-edit.html", {"form":form})
+    
+    def post(self, request):
+        user = get_object_or_404(User, pk=request.user.id)
+        form = ProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "اطلاعات کاربری شما با موفقیت ویرایش شد.")
+            return redirect("accounts:profile")
+        return render(request, "accounts/profile-edit.html", {"form":form})
+    
+
+class AddressAddView(LoginRequiredMixin, views.View):
+    login_url = "accounts:sign-in"
+
+    def get(self, request):
+        form = AddressForm()
+        return render(request, "accounts/address-add.html", {"form":form})
+    
+    def post(self, request):
+        user = get_object_or_404(User, pk=request.user.id)
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = user
+            obj.user_modified = user
+            obj.user_created = user
+            obj.save()
+            messages.success(request, "آدرس شما با موفقیت ثبت شد.")
+            return redirect("accounts:profile")
+        return render(request, "accounts/address-add.html", {"form":form})
+    
+
+class AddressEditView(LoginRequiredMixin, views.View):
+    login_url = "accounts:sign-in"
+
+    def get(self, request, id):
+        address = get_object_or_404(AddressModel, pk=id)
+        form = AddressForm(instance=address)
+        return render(request, "accounts/address-edit.html", {"form":form})
+    
+    def post(self, request, id):
+        address = get_object_or_404(AddressModel, pk=id)
+        user = get_object_or_404(User, pk=request.user.id)
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = user
+            obj.user_created = user
+            obj.user_modified = user
+            obj.save()
+            messages.success(request, "آدرس شما با موفقیت ویرایش شد.")
+            return redirect("accounts:profile")
+        return render(request, "accounts/address-edit.html", {"form":form})

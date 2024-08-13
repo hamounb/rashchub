@@ -1,5 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from .models import AddressModel
+from django.contrib.auth.models import User
 
 
 def is_mobile(value):
@@ -9,6 +11,10 @@ def is_mobile(value):
 def is_number(value):
     if not str(value).isnumeric():
         raise ValidationError('لطفا فقط عدد وارد نمایید!')
+    
+def is_postal(value):
+    if len(value) != 10 or not str(value).isnumeric():
+        raise ValidationError('کد پستی صحیح نمی‌باشد!')
     
 
 class SignUpForm(forms.Form):
@@ -29,3 +35,39 @@ class TokenForm(forms.Form):
     fourth = forms.CharField(max_length=1, required=True, validators=[is_number],  widget=forms.TextInput(attrs={"class":"text-center form-control rounded"}))
     fifth = forms.CharField(max_length=1, required=True, validators=[is_number],  widget=forms.TextInput(attrs={"class":"text-center form-control rounded"}))
     sixth = forms.CharField(max_length=1, required=True, validators=[is_number],  widget=forms.TextInput(attrs={"class":"text-center form-control rounded"}))
+
+
+class AddressForm(forms.ModelForm):
+    postal_code = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class':'form-control'}), label="کد پستی", validators=[is_postal])
+
+    class Meta:
+        model = AddressModel
+
+        fields = (
+                  'province',
+                  'city',
+                  'postal_code',
+                  'address',
+                  )
+        widgets = {
+            'province': forms.TextInput(attrs={'class':'form-control'}),
+            'city': forms.TextInput(attrs={'class':'form-control'}),
+            'address': forms.Textarea(attrs={'class':'form-control', 'rows':4}),
+        }
+
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+
+        fields = (
+                  'first_name',
+                  'last_name',
+                  'email',
+                  )
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class':'form-control'}),
+            'last_name': forms.TextInput(attrs={'class':'form-control'}),
+            'email': forms.EmailInput(attrs={'class':'form-control'}),
+        }

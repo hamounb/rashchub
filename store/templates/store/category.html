@@ -79,7 +79,7 @@
                                         <span>{{ product.sale }}</span>
                                     </div>
                                     <h6 class="unit">{% for i in product.color.all %}{{ i.title }}، {% endfor %}</h6>
-                                    <h5 class="price"><span class="theme-color">{% if product.price %}{{ product.price }} تومان{% else %}0{% endif %} </span>
+                                    <h5 class="price"><span class="theme-color">{% if product.price %}{{ product.price }} ریال{% else %}0{% endif %} </span>
                                     </h5>
                                    <div class="add-to-cart-box bg-white">
                                         <a href="{% url 'store:cart-add' id=product.pk %}" class="btn btn-block btn-add-cart">افزودن به سبد خرید</a>

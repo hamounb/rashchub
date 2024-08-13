@@ -1,0 +1,537 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load jalali_tags %}
+{% block title %}
+حساب کاربری | راش چوب
+{% endblock title %}
+
+{% block content %}
+    <!-- Breadcrumb Section Start -->
+    <section class="breadcrumb-section pt-0">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-contain">
+                        <h2>حساب کاربری</h2>
+                        <nav>
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i class="fa-solid fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active">حساب کاربری</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- User Dashboard Section Start -->
+    <section class="user-dashboard-section section-b-space">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-xxl-3 col-lg-4">
+                    <div class="dashboard-left-sidebar">
+                        <div class="close-button d-flex d-lg-none">
+                            <button class="close-sidebar">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="profile-box">
+                            <div class="cover-image">
+                                <img src="{% static 'assets/images/inner-page/cover-img.jpg' %}" class="img-fluid blur-up lazyload"
+                                    alt="">
+                            </div>
+
+                            <div class="profile-contain">
+                                <div class="profile-image">
+                                    <div class="position-relative">
+                                        <img src="{% static 'assets/images/inner-page/user/1.jpg' %}"
+                                            class="blur-up lazyload update_img" alt="">
+                                        <div class="cover-icon">
+                                            <i class="fa-solid fa-pen">
+                                                <input type="file" onchange="readURL(this,0)">
+                                            </i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="profile-name">
+                                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                                    <h6 class="text-content">{{ user.username }}</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="nav nav-pills user-nav-pills" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-dashboard-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-dashboard" type="button"><i data-feather="home"></i>
+                                    داشبورد</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-order-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-order" type="button"><i
+                                        data-feather="shopping-bag"></i>سفارشات</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-card-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-card" type="button" role="tab"><i
+                                        data-feather="credit-card"></i> مالی</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-address-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-address" type="button" role="tab"><i
+                                        data-feather="map-pin"></i>آدرس</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                                    data-bs-target="#pills-profile" type="button" role="tab"><i data-feather="user"></i>
+                                    پروفایل</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xxl-9 col-lg-8">
+                    <button class="btn left-dashboard-show btn-animation btn-md fw-bold d-block mb-4 d-lg-none">نمایش
+                        منو</button>
+                    <div class="dashboard-right-sidebar">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-dashboard" role="tabpanel">
+                                <div class="dashboard-home">
+                                    <div class="title">
+                                        <h2>داشبورد من</h2>
+                                        <span class="title-leaf">
+                                            <svg class="icon-width bg-gray">
+                                                <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    {% if messages %}
+                                    <div>
+                                        {% for message in messages %}
+                                            {% if message.tags == 'error' %}
+                                                <div class="alert alert-danger mb-4" role="alert">
+                                                    {{ message }}
+                                                </div>
+                                            {% else %}
+                                                <div class="alert alert-{{ message.tags }} mb-4" role="alert">
+                                                    {{ message }}
+                                                </div>
+                                            {% endif %}
+                                            
+                                        {% endfor %}
+                                     </div>
+                                    {% endif %}
+                                    <div class="dashboard-user-name">
+                                        <h6 class="text-content">سلام, <b class="text-title">{{ user.first_name }} {{ user.last_name }}</b></h6>
+                                        <p class="text-content">
+                                            
+                                                کاربر گرامی توجه داشته باشید که در صورت عدم تکمیل اطلاعات حساب کاربری خود 
+                                                که شامل نام، نام خانوادگی و آدرس می‌باشد قادر به ثبت سفارش نخواهید بود، پس لطفا جهت تکمیل آن‌ها اقدام فرمایید.
+                                            
+                                        </p>
+                                    </div>
+
+                                    <div class="total-box">
+                                        <div class="row g-sm-4 g-3">
+
+                                            <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
+                                                <div class="total-contain">
+                                                    <img src="{% static 'assets/images/svg/pending.svg' %}"
+                                                        class="img-1 blur-up lazyload" alt="">
+                                                    <img src="{% static 'assets/images/svg/pending.svg' %}" class="blur-up lazyload"
+                                                        alt="">
+                                                    <div class="totle-detail">
+                                                        <h5>مجموع سفارشات</h5>
+                                                        <h3>{{ total_waiting }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
+                                                <div class="total-contain">
+                                                    <img src="{% static 'assets/images/svg/order.svg' %}"
+                                                        class="img-1 blur-up lazyload" alt="">
+                                                    <img src="{% static 'assets/images/svg/order.svg' %}" class="blur-up lazyload"
+                                                        alt="">
+                                                    <div class="totle-detail">
+                                                        <h5>سفارشات در انتظار</h5>
+                                                        <h3>{{ total_invoices }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xxl-4 col-lg-6 col-md-4 col-sm-6">
+                                                <div class="total-contain">
+                                                    <img src="{% static 'assets/images/svg/wishlist.svg' %}"
+                                                        class="img-1 blur-up lazyload" alt="">
+                                                    <img src="{% static 'assets/images/svg/wishlist.svg' %}"
+                                                        class="blur-up lazyload" alt="">
+                                                    <div class="totle-detail">
+                                                        <h5>مجموع پرداخت شده‌ها</h5>
+                                                        <h3>{{ total_payed }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="dashboard-title">
+                                        <h3>اطلاعات حساب کاربری</h3>
+                                    </div>
+
+                                    <div class="row g-4">
+                                        <div class="col-xxl-6">
+                                            <div class="dashboard-content-title">
+                                                <h4>اطلاعات اولیه <a href="{% url 'accounts:profile-edit' %}">ویرایش</a>
+                                                </h4>
+                                            </div>
+                                            <div class="dashboard-detail">
+                                                {% if user.first_name %}
+                                                <h6 class="text-content">{{ user.first_name }} {{ user.last_name }}</h6>
+                                                {% else %}
+                                                <h6 class="text-content">لطفا نام و نام خانوادگی خود را وارد کنید</h6>
+                                                {% endif %}
+                                                <h6 class="text-content">{{ user.email }}</h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xxl-6">
+                                            <div class="dashboard-content-title">
+                                                <h4>خبرنامه <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                        data-bs-target="#editProfile">ویرایش</a></h4>
+                                            </div>
+                                            <div class="dashboard-detail">
+                                                <h6 class="text-content">شما در حال حاضر عضو خبرنامه نیستید!</h6>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="dashboard-content-title">
+                                                <h4>آدرس ها <a href="{% url 'accounts:address-add' %}" >ویرایش</a></h4>
+                                            </div>
+
+                                            <div class="row g-4">
+                                                {% for address in addresses %}
+                                                {% if address %}
+                                                <div class="col-xxl-6">
+                                                    <div class="dashboard-detail">
+                                                        <h6 class="text-content">آدرس </h6>
+                                                        <h6 class="text-content">{{ address.city }} - {{ address.address }}</h6>
+                                                        <a href="{% url 'accounts:address-edit' id=address.pk %}" >ویرایش آدرس</a>
+                                                    </div>
+                                                </div>
+                                                {% else %}
+                                                <div class="col-xxl-6">
+                                                    <div class="dashboard-detail">
+                                                        <h6 class="text-content">آدرس </h6>
+                                                        <h6 class="text-content">هنوز آدرسی ثبت نکرده اید</h6>
+                                                        <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                            data-bs-target="#editProfile">ویرایش آدرس</a>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-order" role="tabpanel">
+                                <div class="dashboard-order">
+                                    <div class="title">
+                                        <h2>تاریخچه سفارشات من</h2>
+                                        <span class="title-leaf title-leaf-gray">
+                                            <svg class="icon-width bg-gray">
+                                                <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                            </svg>
+                                        </span>
+                                    </div>
+
+                                    <div class="order-contain">
+                                        {% for invoice in invoices %}
+                                        <div class="order-box dashboard-bg-box">
+                                            <div class="order-container">
+                                                <div class="order-icon">
+                                                    <i data-feather="box"></i>
+                                                </div>
+
+                                                <div class="order-detail">
+                                                    {% if invoice.get_state_display == 'پرداخت شده' %}
+                                                    <h4 class="mb-2">وضعیت <span class="success-bg">{{ invoice.get_state_display }}</span></h4>
+                                                    {% else %}
+                                                    <h4 class="mb-2">وضعیت <span>{{ invoice.get_state_display }}</span></h4>
+                                                    {% endif %}
+                                                    <h4 class="mb-2">شماره سفارش: {{ invoice.pk }} - تاریخ سفارش: {{ invoice.created_date|to_jalali:'%Y/%m/%d' }}</h4>
+                                                    <h4 class="mb-2">مبلغ نهایی: {{ invoice.total_price }} ریال</h4>
+                                                    <h6 class="text-content">
+                                                        آدرس: {{ invoice.address.province }} {{ invoice.address.city }} {{ invoice.address.address|safe }} - کد پستی: {{ invoice.address.postal_code }} 
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            
+                                            {% for item in invoice.invoiceitemmodel_set.all %}
+                                            <div class="product-order-detail">
+                                                <a href="product-left-thumbnail.html" class="order-image">
+                                                    <img src="{% if item.product.product.cover.url %}{{ item.product.product.cover.url }}{% endif %}"
+                                                        class="blur-up lazyload" alt="{{ item.product.name }}" style="width:200px">
+                                                </a>
+                                                <div class="order-wrap">
+                                                    <a href="product-left-thumbnail.html">
+                                                        <h3>{{ item.product.product.name }}</h3>
+                                                    </a>
+                                                    <ul class="product-size">
+
+                                                        <li>
+                                                            <div class="size-box">
+                                                                <h6 class="text-content">مدل : </h6>
+                                                                <h5>{{ item.product.capacity.title }}</h5>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="size-box">
+                                                                <h6 class="text-content">قیمت : </h6>
+                                                                <h5>{{ item.price }} ریال</h5>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="size-box">
+                                                                <h6 class="text-content">قیمت با تخفیف : </h6>
+                                                                <h5>{{ item.on_sale }} ریال</h5>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="size-box">
+                                                                <h6 class="text-content">توضیحات : </h6>
+                                                                <h5>{{ item.description|safe }}</h5>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-address" role="tabpanel">
+                                <div class="dashboard-address">
+                                    <div class="title title-flex">
+                                        <div>
+                                            <h2>آدرس های شما</h2>
+                                            <span class="title-leaf">
+                                                <svg class="icon-width bg-gray">
+                                                    <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                                </svg>
+                                            </span>
+                                        </div>
+
+                                        <button class="btn theme-bg-color text-white btn-sm fw-bold mt-lg-0 mt-3"
+                                            data-bs-toggle="modal" data-bs-target="#add-address"><i data-feather="plus"
+                                                class="me-2"></i> افزودن آدرس جدید</button>
+                                    </div>
+
+                                    <div class="row g-sm-4 g-3">
+                                        {% for address in addresses %}
+                                        <div class="col-xxl-4 col-xl-6 col-lg-12 col-md-6">
+                                            <div class="address-box">
+                                                <div>
+                                                    <div class="form-check">
+                                                        {% if forloop.last %}
+                                                        <input class="form-check-input" type="radio" name="jack"
+                                                            id="flexRadioDefault2" checked>
+                                                        {% else %}
+                                                        <input class="form-check-input" type="radio" name="jack"
+                                                            id="flexRadioDefault2">
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="label">
+                                                        <label>{{ address.province }}</label>
+                                                    </div>
+
+                                                    <div class="table-responsive address-table">
+                                                        <table class="table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="2">{{ user.first_name }} {{ user.last_name }}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>شهر :</td>
+                                                                    <td>{{ address.city }}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>کد پستی :</td>
+                                                                    <td>{{ address.postal_code }}</td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>آدرس :</td>
+                                                                    <td>
+                                                                        <p>
+                                                                            {{ address.address }}
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="button-group">
+                                                    <button class="btn btn-sm add-button w-100" data-bs-toggle="modal"
+                                                        data-bs-target="#editProfile"><i data-feather="edit"></i>
+                                                        ویرایش</button>
+                                                    <button class="btn btn-sm add-button w-100" data-bs-toggle="modal"
+                                                        data-bs-target="#removeProfile"><i data-feather="trash-2"></i>
+                                                        حذف</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-card" role="tabpanel">
+                                <div class="dashboard-card">
+                                    <div class="title title-flex">
+                                        <div>
+                                            <h2>پرداخت‌های شما</h2>
+                                            <span class="title-leaf">
+                                                <svg class="icon-width bg-gray">
+                                                    <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-4">
+                                        <div class="col-xxl-4 col-xl-6 col-lg-12 col-sm-6">
+                                            <div class="payment-card-detail">
+                                                <div class="card-details">
+
+                                                    <div class="card-number">
+                                                        <div class="date">
+                                                            <h3>وضعیت:</h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-number">
+                                                        <h4>شماره پیگیری: </h4>
+                                                    </div>
+                                                    <div class="card-number">
+                                                        <h4>تاریخ: </h4>
+                                                    </div>
+
+                                                    <div class="name-detail">
+                                                        <div class="name">
+                                                            <h5>مبلغ: </h5>
+                                                        </div>
+                                                        <div class="card-img">
+                                                            <img src="{% static 'assets/images/payment-icon/1.jpg' %}"
+                                                                class="img-fluid blur-up lazyloaded" alt="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel">
+                                <div class="dashboard-profile">
+                                    <div class="title">
+                                        <h2>پروفایل من</h2>
+                                        <span class="title-leaf">
+                                            <svg class="icon-width bg-gray">
+                                                <use xlink:href="../assets/svg/leaf.svg#leaf"></use>
+                                            </svg>
+                                        </span>
+                                    </div>
+
+                                    <div class="profile-detail dashboard-bg-box">
+                                        <div class="dashboard-title">
+                                            <h3>اطلاعات کلی</h3>
+                                        </div>
+                                        <div class="profile-name-detail">
+                                            <div class="d-sm-flex align-items-center d-block">
+                                                <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                                                <div class="product-rating profile-rating">
+                                                    <ul class="rating">
+                                                        <li>
+                                                            <i data-feather="star" class="fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i data-feather="star" class="fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i data-feather="star" class="fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i data-feather="star" class="fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i data-feather="star" class="fill"></i>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <a href="{% url 'accounts:profile-edit' %}">ویرایش</a>
+                                        </div>
+
+                                        <div class="location-profile">
+                                            <ul>
+                                                <li>
+                                                    <div class="location-box">
+                                                        <i data-feather="phone-call"></i>
+                                                        <h6>{{ user.username }}</h6>
+                                                    </div>
+                                                </li>
+
+                                                <li>
+                                                    <div class="location-box">
+                                                        <i data-feather="mail"></i>
+                                                        <h6>{{ user.email }}</h6>
+                                                    </div>
+                                                </li>
+
+                                                <li>
+                                                    <div class="location-box">
+                                                        <i data-feather="check-square"></i>
+                                                        <h6>میزان فعالیت : 2 سال</h6>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="profile-description">
+                                            <p>
+                                                کاربر گرامی توجه داشته باشید که در صورت عدم تکمیل اطلاعات حساب کاربری خود 
+                                                که شامل نام، نام خانوادگی و آدرس می‌باشد قادر به ثبت سفارش نخواهید بود، پس لطفا جهت تکمیل آن‌ها اقدام فرمایید.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- User Dashboard Section End -->
+{% endblock content %}

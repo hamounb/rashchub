@@ -77,7 +77,7 @@
                                 <div class="price-rating">
                                     {% for p in product.productpricemodel_set.all %}
                                     {% if p.capacity.title == 'پایه' %}
-                                    <h3 class="theme-color price">{% if p.price %}{{ p.price }}{% else %}0{% endif %} تومان</h3>
+                                    <h3 class="theme-color price">{% if p.price %}{{ p.price }}{% else %}0{% endif %} ریال</h3>
                                     {% endif %}
                                     {% endfor %}
                                     <div class="product-rating custom-rate">
@@ -119,9 +119,9 @@
                                             <option value="" selected="selected" hidden="hidden">انتخاب مدل</option>
                                             {% for i in product.productpricemodel_set.all %}
                                             {% if i.on_sale != "0" %}
-                                            <option value="{{ i.pk }}">{{ i.capacity.title }}: {{ i.price }} تومان با تخفیف</option>
+                                            <option value="{{ i.pk }}">{{ i.capacity.title }}: {{ i.price }} ریال با تخفیف</option>
                                             {% else %}
-                                            <option value="{{ i.pk }}">{{ i.capacity.title }}: {{ i.price }} تومان بدون تخفیف</option>
+                                            <option value="{{ i.pk }}">{{ i.capacity.title }}: {{ i.price }} ریال بدون تخفیف</option>
                                             {% endif %}
                                             {% endfor %}
                                         </select>
@@ -657,7 +657,7 @@
                                                     <span>{{ new.category.title }}</span>
                                                     {% for p in new.productpricemodel_set.all %}
                                                     {% if p.capacity.title == 'پایه' %}
-                                                    <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else%}0{% endif %} تومان</h6>
+                                                    <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else%}0{% endif %} ریال</h6>
                                                     {% endif %}
                                                     {% endfor %}
                                                 </div>
@@ -732,7 +732,7 @@
                                         </h6>
                                         {% for p in i.productpricemodel_set.all %}
                                         {% if p.capacity.title == 'پایه' %}
-                                        <h5 class="price"><span class="theme-color">{% if i.price %}{{ i.price }}{% else %}0{% endif %} تومان</span> 
+                                        <h5 class="price"><span class="theme-color">{% if i.price %}{{ i.price }}{% else %}0{% endif %} ریال</span> 
                                         </h5>
                                         {% endif %}
                                         {% endfor %}

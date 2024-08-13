@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django_ckeditor_5.fields import CKEditor5Field
 from datetime import datetime
-import os
+from accounts.models import AddressModel
 
 # Create your models here.
 
@@ -13,11 +13,11 @@ def is_number(value):
         raise ValidationError('لطفا فقط عدد وارد نمایید!')
     
 def get_image_path(obj, fn):
-    path = datetime.now().strftime(f"images/%Y-%m/%d/{fn}")
+    path = datetime.now().strftime(f"images/%Y-%m/%d/{obj.pk}/{fn}")
     return path
 
 def get_cover_path(obj, fn):
-    path = datetime.now().strftime(f"cover/%Y-%m/%d/{fn}")
+    path = datetime.now().strftime(f"cover/%Y-%m/%d/{obj.pk}/{fn}")
     return path
     
 
@@ -224,6 +224,7 @@ class InvoiceModel(BaseModel):
     user = models.ForeignKey(User, verbose_name="کاربر", on_delete=models.PROTECT)
     state = models.CharField(verbose_name='وضعیت', max_length=50, choices=STATE_CHOICES, default=STATE_WAIT)
     total_price = models.CharField(verbose_name='مبلغ کل', max_length=12, validators=[is_number])
+    address = models.ForeignKey(AddressModel, verbose_name="آدرس", on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField(verbose_name='توضیحات', null=True, blank=True)
 
     def __str__(self):
@@ -240,6 +241,7 @@ class InvoiceItemModel(BaseModel):
     product = models.ForeignKey(ProductPriceModel, verbose_name="محصول", on_delete=models.PROTECT)
     price = models.CharField(verbose_name="قیمت", max_length=12, validators=[is_number])
     on_sale = models.CharField(verbose_name="تخفیف", max_length=12, validators=[is_number])
+    description = models.TextField(verbose_name='توضیحات', null=True, blank=True)
 
     def __str__(self):
         return f"{self.invoice.pk}--{self.invoice.state}--{self.invoice.user.username} ({self.product.product.name}-{self.product.capacity.title})"
