@@ -236,14 +236,16 @@ class InvoiceView(views.View):
     def get(self, request, id):
         user = get_object_or_404(User, pk=request.user.id)
         addresses = AddressModel.objects.filter(user=user)
-        invoice = get_object_or_404(InvoiceModel, Q(user=user) & Q(pk=id) & Q(is_active=True))
-        form = AddressSelectForm()
-        context = {
-            "addresses":addresses,
-            "invoice":invoice,
-            "form":form,
-        }
-        return render(request, "store/invoice-view.html", context)
+        if addresses:
+            invoice = get_object_or_404(InvoiceModel, Q(user=user) & Q(pk=id) & Q(is_active=True))
+            form = AddressSelectForm()
+            context = {
+                "addresses":addresses,
+                "invoice":invoice,
+                "form":form,
+            }
+            return render(request, "store/invoice-view.html", context)
+        return redirect("accounts:address-add")
     
     def post(self, request, id):
         user = get_object_or_404(User, pk=request.user.id)
@@ -271,12 +273,13 @@ class InvoiceView(views.View):
                     description=f"صورتحساب شماره {invoice.pk}"
                 )
                 payment.save()
+                callback = reverse("store:verify", args=[payment.pk])
                 data = {
                         "MerchantID": settings.MERCHANT,
                         "Amount": int(invoice.total_price),
                         "Description": f"صورتحساب شماره {invoice.pk}",
                         "Phone": user.username,
-                        "CallbackURL": reverse("store:verify", args=[payment.pk]),
+                        "CallbackURL": f"{callback}/",
                     }
                 data = json.dumps(data)
                 headers = {'content-type': 'application/json', 'content-length': str(len(data)) }
@@ -310,12 +313,13 @@ class InvoiceView(views.View):
                     description=f"صورتحساب شماره {invoice.pk}"
                 )
                 payment.save()
+                callback = reverse("store:verify", args=[payment.pk])
                 data = {
                         "MerchantID": settings.MERCHANT,
                         "Amount": 1000,
                         "Description": f"صورتحساب شماره {invoice.pk}",
                         "Phone": user.username,
-                        "CallbackURL": reverse("store:verify", args=[payment.pk]),
+                        "CallbackURL": f"{callback}/",
                     }
                 data = json.dumps(data)
                 headers = {'content-type': 'application/json', 'content-length': str(len(data)) }
