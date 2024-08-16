@@ -293,14 +293,10 @@
                                 <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} ریال</h6>
                                 {% endif %}
                                 {% endfor %}
-                                {% for p in sale.productpricemodel_set.all %}
-                                {% if p.capacity.title == 'پایه' %}
                                 <div class="add-to-cart-btn-2 addtocart_btn">
-                                    <button class="btn addcart-button btn buy-button"><a href="{% url 'store:cart-add' id=p.pk %}" style="color:#417394"><i
+                                    <button class="btn addcart-button btn buy-button"><a href="{% url 'store:product-details' slug=sale.slug %}" style="color:#417394"><i
                                             class="fa-solid fa-plus"></i></a></button>
                                 </div>
-                                {% endif %}
-                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -442,11 +438,9 @@
                                                     <h6 class="name">{{ new.name }}</h6>
                                                 </a>
                                                 <span>{{ new.category.title }}</span>
-                                                {% for p in new.productpricemodel_set.all %}
-                                                {% if p.capacity.title == 'پایه' %}
-                                                <h6 class="price theme-color">{% if p.price %}{{ p.price }}{% else %}0{% endif %} ریال</h6>
-                                                {% endif %}
-                                                {% endfor %}
+                                                <a href="{% url 'store:product-details' slug=new.slug %}" class="text-title">
+                                                    <h6 class="price theme-color">قیمت</h6>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

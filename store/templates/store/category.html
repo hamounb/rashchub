@@ -82,7 +82,7 @@
                                     <h5 class="price"><span class="theme-color">{% if product.price %}{{ product.price }} ریال{% else %}0{% endif %} </span>
                                     </h5>
                                    <div class="add-to-cart-box bg-white">
-                                        <a href="{% url 'store:cart-add' id=product.pk %}" class="btn btn-block btn-add-cart">افزودن به سبد خرید</a>
+                                        <a href="{% url 'store:product-details' slug=product.slug %}" class="btn btn-block btn-add-cart">مشاهده جزئیات</a>
                                     </div>
                                 </div>
                             </div>

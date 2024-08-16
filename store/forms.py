@@ -21,3 +21,14 @@ class ContactUsForm(forms.Form):
 
 class CartSubmitForm(forms.Form):
     price = forms.CharField()
+
+
+class AddressSelectForm(forms.Form):
+    STATE_DEPOSIT = 'deposit'
+    STATE_PAID = 'paid'
+    STATE_CHOICES = (
+        (STATE_DEPOSIT, "پیش پرداخت"),
+        (STATE_PAID, "تسویه حساب"),
+    )
+    address = forms.CharField(widget=forms.RadioSelect())
+    amount = forms.CharField(widget=forms.RadioSelect(choices=STATE_CHOICES))

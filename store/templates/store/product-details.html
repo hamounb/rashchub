@@ -43,7 +43,7 @@
                                 <div class="row g-sm-4 g-2">
                                     <div class="col-12">
                                         <div class="product-main no-arrow">
-                                            {% for image in images %}
+                                            {% for image in product.productimagemodel_set.all %}
                                             <div>
                                                 <div class="slider-image">
                                                     <img src="{{ image.image.url}}" {% if forloop.counter == 1 %}id="img-1"{% endif %}
@@ -57,7 +57,7 @@
 
                                     <div class="col-12">
                                         <div class="left-slider-image left-slider no-arrow slick-top">
-                                            {% for image in images %}
+                                            {% for image in product.productimagemodel_set.all %}
                                             <div>
                                                 <div class="sidebar-image">
                                                     <img src="{{ image.image.url }}"

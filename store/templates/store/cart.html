@@ -35,6 +35,22 @@
         <div class="container-fluid-lg">
             <div class="row g-sm-5 g-3">
                 <div class="col-xxl-9">
+                    {% if messages %}
+                    <div>
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger mb-4" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-{{ message.tags }} mb-4" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+                            
+                        {% endfor %}
+                     </div>
+                    {% endif %}
                     <div class="cart-table">
                         <div class="table-responsive-xl">
                             <table class="table">
@@ -126,7 +142,7 @@
                         <div class="button-group cart-button">
                             <ul>
                                 <li>
-                                    <button onclick="location.href = 'checkout.html';"
+                                    <button onclick="location.href = '{% url 'store:invoice-add' %}';"
                                         class="btn btn-animation proceed-btn fw-bold">پرداخت</button>
                                 </li>
 

@@ -14,4 +14,7 @@ urlpatterns = [
     path("contact-us/", ContactUsView.as_view(), name="contact-us"),
     path("help/<str:key>/", HelpView.as_view(), name="help"),
     path("cart/submit/", CartSubmitView.as_view(), name="cart-submit"),
+    path("invoice/add/", InvoiceAddView.as_view(), name="invoice-add"),
+    path("invoice/<int:id>/", InvoiceView.as_view(), name="invoice-view"),
+    path("verify/<int:id>/", VerifyView.as_view(), name="verify"),
 ]

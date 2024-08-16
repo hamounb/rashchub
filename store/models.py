@@ -224,7 +224,7 @@ class InvoiceModel(BaseModel):
     user = models.ForeignKey(User, verbose_name="کاربر", on_delete=models.PROTECT)
     state = models.CharField(verbose_name='وضعیت', max_length=50, choices=STATE_CHOICES, default=STATE_WAIT)
     total_price = models.CharField(verbose_name='مبلغ کل', max_length=12, validators=[is_number])
-    address = models.ForeignKey(AddressModel, verbose_name="آدرس", on_delete=models.SET_NULL, null=True, blank=True)
+    address = models.TextField(verbose_name="آدرس", null=True, blank=True)
     description = models.TextField(verbose_name='توضیحات', null=True, blank=True)
 
     def __str__(self):
@@ -250,3 +250,32 @@ class InvoiceItemModel(BaseModel):
         ordering = ["-created_date","invoice"]
         verbose_name = "اقلام فاکتور"
         verbose_name_plural = "اقلام فاکتورها"
+
+
+class PaymentModel(models.Model):
+    STATE_WAIT = 'wait'
+    STATE_DEPOSIT = 'deposit'
+    STATE_PAID = 'paid'
+    STATE_CHOICES = (
+        (STATE_WAIT, "در انتظار پرداخت"),
+        (STATE_DEPOSIT, "پیش پرداخت"),
+        (STATE_PAID, "پرداخت شده"),
+    )
+    state = models.CharField(verbose_name='وضعیت', max_length=50, choices=STATE_CHOICES, default=STATE_WAIT)
+    invoice = models.ForeignKey(InvoiceModel, verbose_name="فاکتور", on_delete=models.SET_NULL, null=True, blank=True)
+    amount = models.IntegerField(verbose_name="مبلغ", validators=[MinValueValidator(0)])
+    authority = models.CharField(verbose_name="شناسه مرجع", max_length=36, null=True, blank=True)
+    status = models.IntegerField(verbose_name="کد وضعیت", default=0)
+    refid = models.IntegerField(verbose_name="شماره تراکنش خرید", default=0)
+    mobile = models.CharField(verbose_name="شماره تماس خریدار", max_length=11, null=True, blank=True)
+    email = models.CharField(verbose_name="ایمیل خریدار", max_length=100, null=True, blank=True)
+    description = models.CharField(verbose_name="توضیحات", max_length=150, null=True, blank=True)
+    created_date = models.DateTimeField(verbose_name="تاریخ ایجاد", auto_now_add=True)
+
+    def __str__(self):
+        return f"[{self.invoice.pk}]{self.invoice.user.username}--{self.invoice.state}--({self.refid})"
+    
+    class Meta:
+        ordering = ["-created_date"]
+        verbose_name = "فیش پرداخت"
+        verbose_name_plural = "فیش‌های پرداخت"

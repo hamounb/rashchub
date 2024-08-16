@@ -200,3 +200,9 @@ class InvoiceItemAdmin(admin.ModelAdmin):
             obj.user_created = request.user
             obj.user_modified = request.user
         return super().save_model(request, obj, form, change)
+    
+
+@admin.register(PaymentModel)
+class PaymentAdmin(admin.ModelAdmin):
+    readonly_fields = ("authority", "refid", "amount", "status")
+    search_fields = ("authority", "refid", "mobile")

@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load jalali_tags %}
+
+{% block title %}
+تسویه حساب | راش چوب
+{% endblock title %}
+
+{% block content %}
+   <!-- Breadcrumb Section Start -->
+   <section class="breadcrumb-section pt-0">
+    <div class="container-fluid-lg">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-contain">
+                    <h2>پرداخت نهایی</h2>
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="index.html">
+                                    <i class="fa-solid fa-house"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">پرداخت نهایی</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Checkout section Start -->
+<section class="checkout-section-2 section-b-space">
+    <div class="container-fluid-lg">
+        <form method="post">
+            {% csrf_token %}
+        <div class="row g-sm-4 g-3">
+            <div class="col-lg-12">
+                <div class="row p-5" style="border:1px solid;">
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p class="p-3">شماره فاکتور: {{ invoice.pk }}</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                        <h3>فروشگاه راش چوب</h3>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p class="p-3" style="text-align:left">تاریخ: {{ invoice.created_date|to_jalali:'%Y/%m/%d' }}</p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="mt-3">
+                            <div class="tab-pane">
+                                <div class="table-responsive">
+                                    <table class="table info-table border">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>نام محصول</th>
+                                                <th>تعداد</th>
+                                                <th>قیمت (تومان)</th>
+                                                <th>قیمت با تخفیف (تومان)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for product in invoice.invoiceitemmodel_set.all %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ product.product.product.name }} - {{ product.product.capacity.title }}</td>
+                                                <td>1</td>
+                                                <td>{{ product.price }}</td>
+                                                <td>{{ product.on_sale }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                        <tfoot>
+                                          <tr>
+                                            <td colspan="4"></td>
+                                            <td class="theme-color">مبلغ قایل پرداخت: {{ invoice.total_price }} تومان</td>
+                                          </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if invoice.state != invoice.STATE_ACCEPT %}
+            <div class="col-lg-12">
+                <div class="left-sidebar-checkout">
+                    <div class="checkout-detail-box">
+                        <ul>
+                            <li>
+                                <div class="checkout-icon">
+                                    <lord-icon target=".nav-item" src="https://cdn.lordicon.com/ggihhudh.json"
+                                        trigger="loop-on-hover"
+                                        colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a"
+                                        class="lord-icon">
+                                    </lord-icon>
+                                </div>
+                                <div class="checkout-box">
+                                    <div class="checkout-title">
+                                        <h4>آدرس پستی</h4>
+                                    </div>
+
+                                    <div class="checkout-detail">
+                                        <div class="row g-3">
+                                            {% for address in addresses %}
+                                            <div class="col-xxl-4 col-lg-4 col-md-6">
+                                                <div class="delivery-address-box">
+                                                    <div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="address" required value="{{ address.pk }}"
+                                                                id="id_address_{{ forloop.counter0 }}">
+                                                        </div>
+
+                                                        <div class="label">
+                                                            <label>انتخاب</label>
+                                                        </div>
+
+                                                        <ul class="delivery-address-detail">
+                                                            <li>
+                                                                <h4 class="fw-500">{{ user.first_name }} {{ user.last_name }}</h4>
+                                                            </li>
+
+                                                            <li>
+                                                                <p class="text-content"><span
+                                                                        class="text-title">آدرس
+                                                                        : </span>{{ address.province }}-{{ address.city }}-{{ address.address }}</p>
+                                                            </li>
+
+                                                            <li>
+                                                                <h6 class="text-content"><span
+                                                                        class="text-title">کد پستی
+                                                                        :</span> {{ address.postal_code }}</h6>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="left-sidebar-checkout">
+                    <div class="checkout-detail-box">
+                        <ul>
+                            <li>
+                                <div class="checkout-icon">
+                                    <lord-icon target=".nav-item" src="https://cdn.lordicon.com/ggihhudh.json"
+                                        trigger="loop-on-hover"
+                                        colors="primary:#121331,secondary:#646e78,tertiary:#0baf9a"
+                                        class="lord-icon">
+                                    </lord-icon>
+                                </div>
+                                <div class="checkout-box">
+                                    <div class="checkout-detail">
+                                        <div class="row g-3">
+                                            <div class="col-xxl-4 col-lg-4 col-md-6">
+                                                <h5><label for="id_amount_0"><input class="form-check-input" type="radio" name="amount" value="deposit" required id="id_amount_0">
+                                                    پیش پرداخت به مبلغ 5،000،000 تومان</label></h5>
+                                            </div>
+                                            <div class="col-xxl-4 col-lg-4 col-md-6">
+                                                <h5><label for="id_amount_1"><input class="form-check-input" type="radio" name="amount" value="paid" required id="id_amount_1">
+                                                    تسویه حساب مبلغ کل فاکتور به مبلغ {{ invoice.total_price }}</label></h5>
+                                            </div>
+                                            <div class="col-xxl-4 col-lg-4 col-md-6">
+                                                <input class="btn theme-bg-color text-white btn-md w-100 mt-4 fw-bold" type="submit" value="پرداخت">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if invoice.state == invoice.STATE_ACCEPT %}
+            <div class="col-lg-12">
+                <p class="text-success"><b>این فاکتور پرداخت شده است</b></p>
+            </div>
+            {% endif %}
+        </div>
+        </form>
+    </div>
+</section>
+<!-- Checkout section End -->
+
+{% endblock content %}

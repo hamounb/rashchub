@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .melipayamak import send_token
 from django.contrib.auth.mixins import LoginRequiredMixin
-from store.models import InvoiceModel, InvoiceItemModel, ProductPriceModel
+from store.models import InvoiceModel
 
 # Create your views here.
 
@@ -170,7 +170,7 @@ class SignInView(views.View):
 
     def get(self, request):
         if self.request.user.is_authenticated:
-            print("yes")
+            return redirect("accounts:profile")
         form = SignInForm()
         return render(request, "accounts/sign-in.html", {"form":form})
     
