@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 from django_ckeditor_5.fields import CKEditor5Field
 from datetime import datetime
-from accounts.models import AddressModel
+from jalali_date import datetime2jalali, date2jalali
 
 # Create your models here.
 
@@ -228,7 +228,12 @@ class InvoiceModel(BaseModel):
     description = models.TextField(verbose_name='توضیحات', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.pk}--{self.state}--{self.total_price}--{self.created_date}"
+        if self.state == self.STATE_ACCEPT:
+            return f"{self.pk}--پرداخت شده--{self.total_price}--{datetime2jalali(self.created_date).strftime('%Y/%m/%d')}"
+        elif self.state == self.STATE_DENY:
+            return f"{self.pk}--پرداخت نشده--{self.total_price}--{datetime2jalali(self.created_date).strftime('%Y/%m/%d')}"
+        else:
+            return f"{self.pk}--درانتظار پرداخت--{self.total_price}--{datetime2jalali(self.created_date).strftime('%Y/%m/%d')}"
     
     class Meta:
         ordering = ["-created_date"]
@@ -244,7 +249,12 @@ class InvoiceItemModel(BaseModel):
     description = models.TextField(verbose_name='توضیحات', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.invoice.pk}--{self.invoice.state}--{self.invoice.user.username} ({self.product.product.name}-{self.product.capacity.title})"
+        if self.invoice.state == self.invoice.STATE_ACCEPT:
+            return f"{self.invoice.pk}--پرداخت شده--{self.invoice.user.username} ({self.product.product.name}-{self.product.capacity.title})"
+        elif self.invoice.state == self.invoice.STATE_DENY:
+            return f"{self.invoice.pk}--پرداخت نشده--{self.invoice.user.username} ({self.product.product.name}-{self.product.capacity.title})"
+        else:
+            return f"{self.invoice.pk}--در انتظار پرداخت--{self.invoice.user.username} ({self.product.product.name}-{self.product.capacity.title})"
     
     class Meta:
         ordering = ["-created_date","invoice"]
@@ -273,9 +283,25 @@ class PaymentModel(models.Model):
     created_date = models.DateTimeField(verbose_name="تاریخ ایجاد", auto_now_add=True)
 
     def __str__(self):
-        return f"[{self.invoice.pk}]{self.invoice.user.username}--{self.invoice.state}--({self.refid})"
+        if self.invoice.state == self.invoice.STATE_ACCEPT:
+            return f"[{self.invoice.pk}]{self.invoice.user.username}--پرداخت شده--({self.refid})"
+        elif self.invoice.state == self.invoice.STATE_DENY:
+            return f"[{self.invoice.pk}]{self.invoice.user.username}--پرداخت نشده--({self.refid})"
+        else:
+            return f"[{self.invoice.pk}]{self.invoice.user.username}--در انتظار پرداخت--({self.refid})"
     
     class Meta:
         ordering = ["-created_date"]
         verbose_name = "فیش پرداخت"
         verbose_name_plural = "فیش‌های پرداخت"
+
+
+class ManagementNumbersModel(BaseModel):
+    mobile = models.CharField(verbose_name="شماره تماس خریدار", max_length=11)
+
+    def __str__(self):
+        return f"{self.mobile}"
+    
+    class Meta:
+        verbose_name = "شماره مدیر"
+        verbose_name_plural = "شماره‌های مدیران"

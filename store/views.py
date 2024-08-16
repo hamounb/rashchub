@@ -273,13 +273,13 @@ class InvoiceView(views.View):
                     description=f"صورتحساب شماره {invoice.pk}"
                 )
                 payment.save()
-                callback = reverse("store:verify", args=[payment.pk])
+                callback = "https://rashchub.com/verify"
                 data = {
                         "MerchantID": settings.MERCHANT,
                         "Amount": int(invoice.total_price),
                         "Description": f"صورتحساب شماره {invoice.pk}",
                         "Phone": user.username,
-                        "CallbackURL": f"{callback}/",
+                        "CallbackURL": f"{callback}/{payment.pk}",
                     }
                 data = json.dumps(data)
                 headers = {'content-type': 'application/json', 'content-length': str(len(data)) }
@@ -313,13 +313,13 @@ class InvoiceView(views.View):
                     description=f"صورتحساب شماره {invoice.pk}"
                 )
                 payment.save()
-                callback = reverse("store:verify", args=[payment.pk])
+                callback = "https://rashchub.com/verify"
                 data = {
                         "MerchantID": settings.MERCHANT,
                         "Amount": 1000,
                         "Description": f"صورتحساب شماره {invoice.pk}",
                         "Phone": user.username,
-                        "CallbackURL": f"{callback}/",
+                        "CallbackURL": f"{callback}/{payment.pk}",
                     }
                 data = json.dumps(data)
                 headers = {'content-type': 'application/json', 'content-length': str(len(data)) }
@@ -352,6 +352,8 @@ class VerifyView(views.View):
 
     def get(self, request, id):
         payment = get_object_or_404(PaymentModel, pk=id)
+        invoice = get_object_or_404(InvoiceModel, pk=payment.invoice.pk)
+        mobiles = ManagementNumbersModel.objects.all()
         data = {
             "MerchantID": settings.MERCHANT,
             "Amount": payment.amount,
@@ -367,6 +369,11 @@ class VerifyView(views.View):
                 payment.status = 100
                 payment.refid = response["RefID"]
                 payment.save()
+                invoice.state = InvoiceModel.STATE_ACCEPT
+                invoice.save()
+                if mobiles:
+                    for i in mobiles:
+                        send_sms(i.mobile, 241819, [invoice.pk])
                 context = {
                     "payment":payment
                 }

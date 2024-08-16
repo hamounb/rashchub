@@ -391,11 +391,9 @@
                                                 </div>
 
                                                 <div class="button-group">
-                                                    <button class="btn btn-sm add-button w-100" data-bs-toggle="modal"
-                                                        data-bs-target="#editProfile"><i data-feather="edit"></i>
+                                                    <button class="btn btn-sm add-button w-100" onclick="location.href='{% url 'accounts:address-edit' id=address.pk %}'"><i data-feather="edit"></i>
                                                         ویرایش</button>
-                                                    <button class="btn btn-sm add-button w-100" data-bs-toggle="modal"
-                                                        data-bs-target="#removeProfile"><i data-feather="trash-2"></i>
+                                                    <button class="btn btn-sm add-button w-100" onclick="location.href='{% url 'accounts:address-edit' id=address.pk %}'"><i data-feather="trash-2"></i>
                                                         حذف</button>
                                                 </div>
                                             </div>
@@ -419,34 +417,35 @@
                                     </div>
 
                                     <div class="row g-4">
+                                        {% for payment in payments %}
                                         <div class="col-xxl-4 col-xl-6 col-lg-12 col-sm-6">
                                             <div class="payment-card-detail">
                                                 <div class="card-details">
 
                                                     <div class="card-number">
                                                         <div class="date">
-                                                            <h3>وضعیت:</h3>
+                                                            <h3>وضعیت: {{ payment.invoice.get_state_display }}</h3>
                                                         </div>
                                                     </div>
                                                     <div class="card-number">
-                                                        <h4>شماره پیگیری: </h4>
+                                                        <h4>شماره پیگیری: {{ payment.refid }}</h4>
                                                     </div>
                                                     <div class="card-number">
-                                                        <h4>تاریخ: </h4>
+                                                        <h4>تاریخ: {{ payment.created_date|to_jalali:'%Y/%m/%d' }}</h4>
                                                     </div>
 
                                                     <div class="name-detail">
                                                         <div class="name">
-                                                            <h5>مبلغ: </h5>
+                                                            <h5>مبلغ: {{ payment.amount }}</h5>
                                                         </div>
                                                         <div class="card-img">
-                                                            <img src="{% static 'assets/images/payment-icon/1.jpg' %}"
-                                                                class="img-fluid blur-up lazyloaded" alt="">
+                                                            <h6>{{ payment.get_state_display }}</h6>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>

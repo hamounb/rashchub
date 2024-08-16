@@ -7,7 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .melipayamak import send_token
 from django.contrib.auth.mixins import LoginRequiredMixin
-from store.models import InvoiceModel
+from store.models import InvoiceModel, PaymentModel
+from django.db.models import Q
 
 # Create your views here.
 
@@ -208,6 +209,7 @@ class ProfileView(LoginRequiredMixin, views.View):
         total_invoices = invoices.count()
         total_payed = invoices.filter(state=InvoiceModel.STATE_ACCEPT).count()
         total_waiting = invoices.filter(state=InvoiceModel.STATE_WAIT).count()
+        payments = PaymentModel.objects.filter(Q(invoice__state=InvoiceModel.STATE_ACCEPT) | Q(invoice__state=InvoiceModel.STATE_DENY) & Q(invoice__is_active=True))
         context = {
             "user":user,
             "addresses":addresses,
@@ -215,6 +217,7 @@ class ProfileView(LoginRequiredMixin, views.View):
             "total_invoices":total_invoices,
             "total_payed":total_payed,
             "total_waiting":total_waiting,
+            "payments":payments,
         }
         return render(request, "accounts/profile.html", context)
     
