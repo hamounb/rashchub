@@ -130,8 +130,10 @@
                             <div class="product-box product-white-bg wow fadeIn">
                                 <div class="product-image">
                                     <a href="{% url 'store:product-details' slug=p.product.slug %}">
+                                        {% if p.product.cover %}
                                         <img src="{{ p.product.cover.url }}"
                                             class="img-fluid blur-up lazyload" alt="">
+                                        {% endif %}
                                     </a>
                                 </div>
                                 <div class="product-detail position-relative">
@@ -278,8 +280,10 @@
                         <div class="product-box product-white-bg wow fadeIn">
                             <div class="product-image">
                                 <a href="{% url 'store:product-details' slug=sale.slug %}">
+                                    {% if sale.cover %}
                                     <img src="{{ sale.cover.url }}" class="img-fluid blur-up lazyload"
                                         alt="{{ sale.name }}">
+                                    {% endif %}
                                 </a>
                             </div>
                             <div class="product-detail position-relative">
@@ -428,8 +432,10 @@
                                 <li>
                                     <div class="offer-product">
                                         <a href="{% url 'store:product-details' slug=new.slug %}" class="offer-image">
+                                            {% if new.cover %}
                                             <img src="{{ new.cover.url }}" class="blur-up lazyload"
                                                 alt="{{ new.name }}">
+                                            {% endif %}
                                         </a>
 
                                         <div class="offer-detail">

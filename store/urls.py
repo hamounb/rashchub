@@ -8,6 +8,7 @@ urlpatterns = [
     path("cart/add/<int:id>/", CartAddView.as_view(), name="cart-add"),
     path("cart/", CartView.as_view(), name="cart"),
     path("cart/remove/<int:id>/", CartRemoveView.as_view(), name="cart-remove"),
+    path("products/", AllProductsView.as_view(), name="all-products"),
     re_path(r'category/(?P<slug>[^/]+)/?/$', CategoryView.as_view(), name="category"),
     re_path(r'product/(?P<slug>[^/]+)/?/$', ProductDetailsView.as_view(), name="product-details"),
     path("about-us/", AboutUsView.as_view(), name="about-us"),

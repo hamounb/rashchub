@@ -645,8 +645,10 @@
                                     <li>
                                         <div class="offer-product">
                                             <a href="{% url 'store:product-details' slug=new.slug %}" class="offer-image">
+                                                {% if new.cover %}
                                                 <img src="{{ new.cover.url }}"
                                                     class="img-fluid blur-up lazyload" alt="{{ new.name }}">
+                                                {% endif %}
                                             </a>
 
                                             <div class="offer-detail">
@@ -714,8 +716,10 @@
                                 <div class="product-header">
                                     <div class="product-image">
                                         <a href="{% url 'store:product-details' slug=i.slug %}">
+                                            {% if i.cover %}
                                             <img src="{{ i.cover.url }}"
                                                 class="img-fluid blur-up lazyload" alt="">
+                                            {% endif %}
                                         </a>
                                     </div>
                                 </div>

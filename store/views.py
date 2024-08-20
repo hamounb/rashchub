@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
-from django.urls import reverse
 from django import views
 from .models import *
+from accounts.models import AddressModel
 from .forms import *
 from django.contrib import messages
 from random import randint
@@ -121,6 +121,22 @@ class CategoryView(views.View):
             "page_obj": page_obj,
         }
         return render(request, "store/category.html", context)
+    
+
+class AllProductsView(views.View):
+
+    def get(self, request):
+        products = ProductModel.objects.filter(Q(is_active=True)).order_by("-created_date")
+        paginator = Paginator(products, 12)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        categories = CategoryModel.objects.all()
+        context = {
+            "products":products,
+            "categories":categories,
+            "page_obj": page_obj,
+        }
+        return render(request, "store/all-products.html", context)
     
 
 class ProductDetailsView(views.View):
@@ -377,6 +393,7 @@ class VerifyView(views.View):
                 context = {
                     "payment":payment
                 }
+                send_sms(invoice.user.username, 241818, [str(payment.refid)])
                 messages.success(request, "پرداخت شما با موفقیت انجام شد.")
                 return render(request, "store/verify.html", context)
             else:
