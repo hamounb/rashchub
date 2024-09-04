@@ -11,6 +11,7 @@ urlpatterns = [
     path("products/", AllProductsView.as_view(), name="all-products"),
     re_path(r'category/(?P<slug>[^/]+)/?/$', CategoryView.as_view(), name="category"),
     re_path(r'product/(?P<slug>[^/]+)/?/$', ProductDetailsView.as_view(), name="product-details"),
+    path("comment/<int:id>/", ProductCommentView.as_view(), name="comment"),
     path("about-us/", AboutUsView.as_view(), name="about-us"),
     path("contact-us/", ContactUsView.as_view(), name="contact-us"),
     path("help/<str:key>/", HelpView.as_view(), name="help"),

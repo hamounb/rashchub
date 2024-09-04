@@ -32,3 +32,15 @@ class AddressSelectForm(forms.Form):
     )
     address = forms.CharField(widget=forms.RadioSelect())
     amount = forms.CharField(widget=forms.RadioSelect(choices=STATE_CHOICES))
+
+
+class ProductCommentForm(forms.Form):
+    STATE_CHOICES = (
+        (1, "1"),
+        (2, "2"),
+        (3, "3"),
+        (4, "4"),
+        (5, "5"),
+    )
+    rate = forms.CharField(label="امتیاز", widget=forms.RadioSelect(attrs={"class":"form-control"}, choices=STATE_CHOICES))
+    comment = forms.CharField(label="نظر شما", widget=forms.Textarea(attrs={"class":"form-control", "placeholder":"لطفا نظر خود را تایپ کنید", "rows":3}))

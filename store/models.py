@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django_ckeditor_5.fields import CKEditor5Field
 from datetime import datetime
-from jalali_date import datetime2jalali, date2jalali
+from jalali_date import datetime2jalali
 
 # Create your models here.
 
@@ -190,6 +190,7 @@ class ProductCommentModel(BaseModel):
     is_active = models.BooleanField(verbose_name="فعال", default=False)
     user = models.ForeignKey(User, verbose_name="کاربر", on_delete=models.SET_NULL, null=True, blank=True)
     product = models.ForeignKey(ProductModel, verbose_name="محصول", on_delete=models.CASCADE)
+    rate = models.IntegerField(verbose_name="امتیاز", default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField(verbose_name="متن بازخورد")
 
     def __str__(self):

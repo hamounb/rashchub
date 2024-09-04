@@ -13,6 +13,7 @@ from django.db.models import Q
 from rashchub import settings
 import requests
 import json
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -111,7 +112,7 @@ class CategoryView(views.View):
     def get(self, request, slug):
         products = ProductModel.objects.filter(Q(category__slug=uri_to_iri(slug)) & Q(is_active=True)).order_by("-created_date")
         paginator = Paginator(products, 12)
-        page_number = self.request.GET.get("page")
+        page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
         categories = CategoryModel.objects.all()
         context = {
@@ -128,7 +129,7 @@ class AllProductsView(views.View):
     def get(self, request):
         products = ProductModel.objects.filter(Q(is_active=True)).order_by("-created_date")
         paginator = Paginator(products, 12)
-        page_number = self.request.GET.get("page")
+        page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
         categories = CategoryModel.objects.all()
         context = {
@@ -143,6 +144,20 @@ class ProductDetailsView(views.View):
 
     def get(self, request, slug):
         product = get_object_or_404(ProductModel, slug=uri_to_iri(slug))
+        comments = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True)).order_by("created_date")
+        total = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True)).count()
+        one  = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=1)).count()
+        one_p = int(float(one * 100 / total))
+        two = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=2)).count()
+        two_p = int(float(two * 100 / total))
+        three = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=3)).count()
+        three_p = int(float(three * 100 / total))
+        four = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=4)).count()
+        four_p = int(float(four * 100 / total))
+        five = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=5)).count()
+        five_p = int(float(five * 100 / total))
+        rate = int(float(((one * 1) + (two * 2) + (three * 3) + (four * 4) + (five * 5)) / total))
+        form = ProductCommentForm()
         view = int(product.view)
         view += 1
         product.view = view
@@ -151,10 +166,57 @@ class ProductDetailsView(views.View):
         products_new = ProductModel.objects.filter(is_active=True).order_by("-created_date")[:2]
         context = {
             "product":product,
+            "comments":comments,
             "products":products,
             "products_new":products_new,
+            "form":form,
+            "rate":rate,
+            "one":one,
+            "two":two,
+            "three":three,
+            "four":four,
+            "five":five,
+            "one_p":one_p,
+            "two_p":two_p,
+            "three_p":three_p,
+            "four_p":four_p,
+            "five_p":five_p,
         }
         return render(request, "store/product-details.html", context)
+    
+
+class ProductCommentView(LoginRequiredMixin, views.View):
+    login_url = "accounts:sign-in"
+
+    def post(self, request, id):
+        user = get_object_or_404(User, pk=request.user.id)
+        product = get_object_or_404(ProductModel, pk=id)
+        mobiles = ManagementNumbersModel.objects.all().order_by("-created_date")
+        form = ProductCommentForm(request.POST)
+        if form.is_valid():
+            rate = form.cleaned_data.get("rate")
+            comment = form.cleaned_data.get("comment")
+            new_comment = ProductCommentModel()
+            new_comment.user = user
+            new_comment.is_active = False
+            new_comment.product = product
+            new_comment.rate = rate
+            new_comment.comment = comment
+            new_comment.user_created = user
+            new_comment.user_modified = user
+            try:
+                new_comment.save()
+            except IntegrityError as e:
+                messages.error(request, "قبلا این دیدگاه خود را ذخیره کرده‌اید!")
+                return render(request, "store/comment.html", {"product":product})
+            else:
+                messages.success(request, "کاربر گرامی نظر شما با موفقیت ثبت شد.")
+                if mobiles:
+                    for i in mobiles:
+                        send_sms(number=i.mobile, bodyId=246562, args=[user.username])
+                return render(request, "store/comment.html", {"product":product})
+        return redirect("store:product-details", slug=product.slug)
+
     
 
 class AboutUsView(views.View):
@@ -187,8 +249,7 @@ class ContactUsView(views.View):
                 code = str(code),
             )
             contact.save()
-            x = send_sms(str(mobile), 239745, [str(code)])
-            print(send_sms)
+            send_sms(str(mobile), 239745, [str(code)])
             messages.success(request, "پیام شما با موفقیت ارسال شد، لطفا منتظر باشید تا همکاران ما با شما تماس بگیرند.")
             return render(request, "store/messages.html")
         return render(request, "store/contact-us.html", {"form":form})
@@ -323,7 +384,7 @@ class InvoiceView(views.View):
                 payment = PaymentModel(
                     state=PaymentModel.STATE_DEPOSIT,
                     invoice=invoice,
-                    amount=1000,
+                    amount=int(float((float(invoice.total_price) * 30) / 100 )),
                     mobile=user.username,
                     email=user.email,
                     description=f"صورتحساب شماره {invoice.pk}"
@@ -332,7 +393,7 @@ class InvoiceView(views.View):
                 callback = "https://rashchub.com/verify"
                 data = {
                         "MerchantID": settings.MERCHANT,
-                        "Amount": 1000,
+                        "Amount": int(float((float(invoice.total_price) * 30) / 100 )),
                         "Description": f"صورتحساب شماره {invoice.pk}",
                         "Phone": user.username,
                         "CallbackURL": f"{callback}/{payment.pk}",

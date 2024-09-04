@@ -170,9 +170,7 @@
                                     </div>
                                     <ul>
                                         <li>
-                                            <a href="javascript:void(0)">
-                                                <img src="{% static 'assets/images/zarrinpal.png' %}" style="width:50px">
-                                            </a>
+                                            <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
                                         </li>
                                     </ul>
                                 </div>
@@ -193,11 +191,6 @@
                                     </li>
 
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="care-tab" data-bs-toggle="tab"
-                                            data-bs-target="#care" type="button" role="tab">راهنمای استفاده</button>
-                                    </li>
-
-                                    <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="review-tab" data-bs-toggle="tab"
                                             data-bs-target="#review" type="button" role="tab">بازخورد</button>
                                     </li>
@@ -208,8 +201,8 @@
                                         <div class="product-description">
                                             <div class="nav-desh">
                                                 <p>
-                                                    {% if product.feature != "<p>&nbsp;</p>" %}
-                                                    {{ product.description }}
+                                                    {% if product.feature %}
+                                                    {{ product.description|safe  }}
                                                     {% endif %}
                                                 </p>
                                             </div>
@@ -227,7 +220,7 @@
                                                     <tr>
                                                         <td>ابعاد(طول x عرض x ارتفاع)</td>
                                                         {% if product.length and product.width and product.height %}
-                                                        <td>{{ product.length }} x {{ product.width }} x {{ product.height }}</td>
+                                                        <td>{{ product.length }} {{ product.width }} {{ product.height }}</td>
                                                         {% else %}
                                                         {% endif %}
                                                     </tr>
@@ -256,18 +249,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane fade" id="care" role="tabpanel">
-                                        <div class="information-box">
-                                            <ul>
-                                                 <li>از محصول خود لذت ببرید!</li>
-                                                 <li>از محصول خود لذت ببرید!</li>
-                                                 <li>از محصول خود لذت ببرید!</li>
-                                                 <li>از محصول خود لذت ببرید!</li>
-                                                 <li>از محصول خود لذت ببرید!</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
                                     <div class="tab-pane fade" id="review" role="tabpanel">
                                         <div class="review-box">
                                             <div class="row">
@@ -276,7 +257,7 @@
                                                         <div class="row">
                                                             <div class="col-xl-12">
                                                                 <div class="product-main-rating">
-                                                                    <h2>3.40
+                                                                    <h2>{{ rate }}
                                                                         <i data-feather="star"></i>
                                                                     </h2>
 
@@ -291,10 +272,10 @@
                                                                             <h5>5<i data-feather="star"></i></h5>
                                                                             <div class="progress">
                                                                                 <div class="progress-bar"
-                                                                                    style="width: 40%;">
+                                                                                    style="width: {{ five_p }}%;">
                                                                                 </div>
                                                                             </div>
-                                                                            <h5 class="total">2</h5>
+                                                                            <h5 class="total">{{ five }}</h5>
                                                                         </div>
                                                                     </li>
                                                                     <li>
@@ -302,10 +283,10 @@
                                                                             <h5>4<i data-feather="star"></i></h5>
                                                                             <div class="progress">
                                                                                 <div class="progress-bar"
-                                                                                    style="width: 20%;">
+                                                                                    style="width: {{ four_p }}%;">
                                                                                 </div>
                                                                             </div>
-                                                                            <h5 class="total">1</h5>
+                                                                            <h5 class="total">{{ four }}</h5>
                                                                         </div>
                                                                     </li>
                                                                     <li>
@@ -313,10 +294,10 @@
                                                                             <h5>3<i data-feather="star"></i></h5>
                                                                             <div class="progress">
                                                                                 <div class="progress-bar"
-                                                                                    style="width: 0%;">
+                                                                                    style="width: {{ three_p }}%;">
                                                                                 </div>
                                                                             </div>
-                                                                            <h5 class="total">0</h5>
+                                                                            <h5 class="total">{{ three }}</h5>
                                                                         </div>
                                                                     </li>
                                                                     <li>
@@ -324,10 +305,10 @@
                                                                             <h5>2<i data-feather="star"></i></h5>
                                                                             <div class="progress">
                                                                                 <div class="progress-bar"
-                                                                                    style="width: 20%;">
+                                                                                    style="width: {{ two_p }}%;">
                                                                                 </div>
                                                                             </div>
-                                                                            <h5 class="total">1</h5>
+                                                                            <h5 class="total">{{ two }}</h5>
                                                                         </div>
                                                                     </li>
                                                                     <li>
@@ -335,10 +316,10 @@
                                                                             <h5>1<i data-feather="star"></i></h5>
                                                                             <div class="progress">
                                                                                 <div class="progress-bar"
-                                                                                    style="width: 20%;">
+                                                                                    style="width: {{ one_p }}%;">
                                                                                 </div>
                                                                             </div>
-                                                                            <h5 class="total">1</h5>
+                                                                            <h5 class="total">{{ one }}</h5>
                                                                         </div>
                                                                     </li>
 
@@ -359,24 +340,47 @@
                                                 <div class="col-xl-7">
                                                     <div class="review-people">
                                                         <ul class="review-list">
+                                                            {% for i in comments %}
                                                             <li>
                                                                 <div class="people-box">
                                                                     <div>
                                                                         <div class="people-image people-text">
-                                                                            <img alt="user" class="img-fluid "
+                                                                            <img alt="کاربر" class="img-fluid "
                                                                                 src="../assets/images/review/1.jpg">
                                                                         </div>
                                                                     </div>
                                                                     <div class="people-comment">
                                                                         <div class="people-name"><a
                                                                                 href="javascript:void(0)"
-                                                                                class="name">جک داو</a>
+                                                                                class="name">{{ i.user.first_name }} {{ i.user.last_name }}</a>
                                                                             <div class="date-time">
-                                                                                <h6 class="text-content"> 29 اردیبهشت 1403
-                                                                                    06:40 : عصر
+                                                                                <h6 class="text-content"> 
+                                                                                    {{ i.created_date|to_jalali:"%Y/%M/%d"}}
                                                                                 </h6>
                                                                                 <div class="product-rating">
                                                                                     <ul class="rating">
+                                                                                        {% if i.rate == 5 %}
+                                                                                        <li>
+                                                                                            <i data-feather="star"
+                                                                                                class="fill"></i>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <i data-feather="star"
+                                                                                                class="fill"></i>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <i data-feather="star"
+                                                                                                class="fill"></i>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <i data-feather="star"
+                                                                                                class="fill"></i>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <i data-feather="star"
+                                                                                                class="fill"></i>
+                                                                                        </li>
+                                                                                        {% elif i.rate == 4 %}
                                                                                         <li>
                                                                                             <i data-feather="star"
                                                                                                 class="fill"></i>
@@ -396,88 +400,7 @@
                                                                                         <li>
                                                                                             <i data-feather="star"></i>
                                                                                         </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="reply">
-                                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="people-box">
-                                                                    <div>
-                                                                        <div class="people-image people-text">
-                                                                            <img alt="user" class="img-fluid "
-                                                                                src="../assets/images/review/2.jpg">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="people-comment">
-                                                                        <div class="people-name"><a
-                                                                                href="javascript:void(0)"
-                                                                                class="name">جیسیکا میلر</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content"> 29 اردیبهشت 1403
-                                                                                    06:34 : عصر
-                                                                                </h6>
-                                                                                <div class="product-rating">
-                                                                                    <div class="product-rating">
-                                                                                        <ul class="rating">
-                                                                                            <li>
-                                                                                                <i data-feather="star"
-                                                                                                    class="fill"></i>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <i data-feather="star"
-                                                                                                    class="fill"></i>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <i data-feather="star"
-                                                                                                    class="fill"></i>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <i data-feather="star"
-                                                                                                    class="fill"></i>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <i
-                                                                                                    data-feather="star"></i>
-                                                                                            </li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="reply">
-                                                                            <p>کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="people-box">
-                                                                    <div>
-                                                                        <div class="people-image people-text">
-                                                                            <img alt="user" class="img-fluid "
-                                                                                src="../assets/images/review/3.jpg">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="people-comment">
-                                                                        <div class="people-name"><a
-                                                                                href="javascript:void(0)"
-                                                                                class="name">امین احمدی</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content"> 29 فروردین 1403
-                                                                                    06:18 : صبح
-                                                                                </h6>
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
+                                                                                        {% elif i.rate == 3 %}
                                                                                         <li>
                                                                                             <i data-feather="star"
                                                                                                 class="fill"></i>
@@ -493,42 +416,10 @@
                                                                                         <li>
                                                                                             <i data-feather="star"></i>
                                                                                         </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="reply">
-                                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="people-box">
-                                                                    <div>
-                                                                        <div class="people-image people-text">
-                                                                            <img alt="user" class="img-fluid "
-                                                                                src="../assets/images/review/4.jpg">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="people-comment">
-                                                                        <div class="people-name"><a
-                                                                                href="javascript:void(0)"
-                                                                                class="name">علی صادقی</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content"> 5 مهر 1403
-                                                                                    05:58 : عصر
-                                                                                </h6>
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
                                                                                         <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
+                                                                                            <i data-feather="star"></i>
                                                                                         </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
+                                                                                        {% elif i.rate == 2 %}
                                                                                         <li>
                                                                                             <i data-feather="star"
                                                                                                 class="fill"></i>
@@ -540,46 +431,13 @@
                                                                                         <li>
                                                                                             <i data-feather="star"></i>
                                                                                         </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="reply">
-                                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="people-box">
-                                                                    <div>
-                                                                        <div class="people-image people-text">
-                                                                            <img alt="user" class="img-fluid "
-                                                                                src="../assets/images/review/5.jpg">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="people-comment">
-                                                                        <div class="people-name"><a
-                                                                                href="javascript:void(0)"
-                                                                                class="name">امین احمدی</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content"> 29 مهر 1402
-                                                                                    05:22 : عصر
-                                                                                </h6>
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
                                                                                         <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
+                                                                                            <i data-feather="star"></i>
                                                                                         </li>
                                                                                         <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
+                                                                                            <i data-feather="star"></i>
                                                                                         </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
+                                                                                        {% else %}
                                                                                         <li>
                                                                                             <i data-feather="star"
                                                                                                 class="fill"></i>
@@ -587,16 +445,27 @@
                                                                                         <li>
                                                                                             <i data-feather="star"></i>
                                                                                         </li>
+                                                                                        <li>
+                                                                                            <i data-feather="star"></i>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <i data-feather="star"></i>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <i data-feather="star"></i>
+                                                                                        </li>
+                                                                                        {% endif %}
                                                                                     </ul>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="reply">
-                                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</p>
+                                                                            <p>{{ i.comment }}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </li>
+                                                            {% endfor %}
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -757,5 +626,80 @@
     </section>
     <!-- Related Product Section End -->
 
+
+    <!-- Review Modal Start -->
+    <div class="modal fade theme-modal question-modal" id="writereview" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">دیدگاه خود را بنویسید</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body pt-0">
+                    <form class="product-review-form" method="post" action="{% url 'store:comment' id=product.pk %}">
+                        {% csrf_token %}
+                        <div class="product-wrapper">
+                            <div class="product-image">
+                                {% if product.cover %}
+                                <img class="img-fluid" alt="Solid Collared Tshirts"
+                                    src="{{ product.cover.url }}">
+                                {% endif %}
+                            </div>
+                            <div class="product-content">
+                                <h5 class="name">{{ product.name }}</h5>
+                                <div class="product-review-rating">
+                                    <div class="product-rating">
+                                        <h6 class="price-number"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-box">
+                            <div class="product-review-rating">
+                                {{ form.rate.label_tag }}
+                                <div class="product-rating">
+                                    <ul class="rating">
+                                        <li>
+                                            <label for="id_rate_0">1-<input type="radio" name="rate" value="1" required id="id_rate_0">
+                                            </label>
+                                        </li>
+                                        <li class="mx-2">
+                                            <label for="id_rate_1"> 2-<input type="radio" name="rate" value="2" required id="id_rate_1"> 
+                                            </label>
+                                        </li>
+                                        <li class="mx-2">
+                                            <label for="id_rate_2"> 3-<input type="radio" name="rate" value="3" required id="id_rate_2">
+                                            </label>
+                                        </li>
+                                        <li class="mx-2">
+                                            <label for="id_rate_3"> 4-<input type="radio" name="rate" value="4" required id="id_rate_3">
+                                            </label>
+                                        </li>
+                                        <li class="mx-2">
+                                            <label for="id_rate_4"> 5-<input type="radio" name="rate" value="5" required id="id_rate_4">
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-box">
+                            {{ form.comment.label_tag }}
+                            {{ form.comment }}
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-md btn-theme-outline fw-bold"
+                                data-bs-dismiss="modal">بستن</button>
+                                <input type="submit" class="btn btn-md fw-bold text-light theme-bg-color" value="ذخیره">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Review Modal End -->
 
 {% endblock content %}

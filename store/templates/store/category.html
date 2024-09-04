@@ -63,8 +63,10 @@
                             <div class="product-header">
                                 <div class="product-image">
                                     <a href="{% url 'store:product-details' slug=product.slug %}">
+                                        {% if product.cover %}
                                         <img src="{{ product.cover.url }}"
                                             class="img-fluid blur-up lazyload" alt="{{ product.name }}">
+                                        {% endif %}
                                     </a>
                                 </div>
                             </div>
@@ -93,10 +95,9 @@
 
                 <nav class="custom-pagination">
                     <ul class="pagination justify-content-center">
-                        </li>
                         {% if page_obj.has_previous %}
                         <li class="page-item">
-                            <a href="?page=1">&laquo; <i class="fa-solid fa-angles-right"></a>
+                            <a href="?page=1"><i class="fa-solid fa-angles-right"></i></a>
                         </li>
                         <li class="page-item">
                             <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
@@ -110,7 +111,7 @@
                             <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
                         </li>
                         <li class="page-item">
-                            <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-left"> &raquo;</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}"><i class="fa-solid fa-angles-left"></i></a>
                         </li>
                         {% endif %}
                     </ul>

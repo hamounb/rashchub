@@ -121,7 +121,7 @@ class MobileVerifyView(views.View):
             fourth = form.cleaned_data.get("fourth")
             fifth = form.cleaned_data.get("fifth")
             sixth = form.cleaned_data.get("sixth")
-            code = f"{first}{second}{third}{fourth}{fifth}TokenModel{sixth}"
+            code = f"{first}{second}{third}{fourth}{fifth}{sixth}"
             if token.token == code:
                 user.is_active = True
                 user.save()
