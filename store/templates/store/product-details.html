@@ -111,11 +111,11 @@
                                     {% csrf_token %}
                                 <div class="product-package">
                                     <div class="product-title">
-                                        <h4>مدل </h4>
+                                        <h4>انتخاب کنید: </h4>
                                     </div>
 
                                     <div class="select-package">
-                                        <select class="form-control form-select" name="price" id="id_price" required>
+                                        <select class="form-select" name="price" id="id_price" required>
                                             <option value="" selected="selected" hidden="hidden">انتخاب مدل</option>
                                             {% for i in product.productpricemodel_set.all %}
                                             {% if i.on_sale != "0" %}

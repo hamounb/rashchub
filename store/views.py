@@ -146,17 +146,30 @@ class ProductDetailsView(views.View):
         product = get_object_or_404(ProductModel, slug=uri_to_iri(slug))
         comments = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True)).order_by("created_date")
         total = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True)).count()
+        one_p = 0
+        two_p = 0
+        three_p = 0
+        four_p = 0
+        five_p = 0
         one  = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=1)).count()
-        one_p = int(float(one * 100 / total))
+        if one:
+            one_p = int(float(one * 100 / total))
         two = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=2)).count()
-        two_p = int(float(two * 100 / total))
+        if two:
+            two_p = int(float(two * 100 / total))
         three = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=3)).count()
-        three_p = int(float(three * 100 / total))
+        if three:
+            three_p = int(float(three * 100 / total))
         four = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=4)).count()
-        four_p = int(float(four * 100 / total))
+        if four:
+            four_p = int(float(four * 100 / total))
         five = ProductCommentModel.objects.filter(Q(product=product) & Q(is_active=True) & Q(rate=5)).count()
-        five_p = int(float(five * 100 / total))
-        rate = int(float(((one * 1) + (two * 2) + (three * 3) + (four * 4) + (five * 5)) / total))
+        if five:
+            five_p = int(float(five * 100 / total))
+        if not one and not two and not three and not four and not five:
+            rate = 0
+        else:
+            rate = int(float(((one * 1) + (two * 2) + (three * 3) + (four * 4) + (five * 5)) / total))
         form = ProductCommentForm()
         view = int(product.view)
         view += 1
